@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EyeClassApp4</string>
+    <string name="title_activity_student_lesson">StudentLesson</string>
 </resources>

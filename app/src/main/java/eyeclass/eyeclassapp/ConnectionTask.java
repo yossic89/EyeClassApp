@@ -32,7 +32,7 @@ public class ConnectionTask extends AsyncTask<String, Void, Integer> {
         try
         {
             // Defined URL  where to send data
-            URL url = new URL("http://192.168.31.189:8080/EyeClass/login");
+            URL url = new URL("http:/192.168.194.95:8080/EyeClass/login");
 
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoOutput(true);

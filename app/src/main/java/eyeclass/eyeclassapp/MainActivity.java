@@ -1,6 +1,7 @@
 package eyeclass.eyeclassapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
            // postReq(id, password);
             int permmision = new ConnectionTask().execute(id, password).get();
             System.out.println("YOSSISSSSSIIIII " + permmision);
+            startActivity(new Intent(MainActivity.this, StudentLesson.class));
         }
     }
 
