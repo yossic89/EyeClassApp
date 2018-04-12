@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-           // postReq(id, password);
             int permmision = new ConnectionTask().execute(id, password).get();
             System.out.println("YOSSISSSSSIIIII " + permmision);
             startActivity(new Intent(MainActivity.this, StudentLesson.class));

@@ -1,6 +1,7 @@
 package eyeclass.eyeclassapp;
 
 import android.os.AsyncTask;
+import android.provider.SyncStateContract;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import Infra.Constants;
 
 public class ConnectionTask extends AsyncTask<String, Void, Integer> {
     @Override
@@ -32,7 +35,7 @@ public class ConnectionTask extends AsyncTask<String, Void, Integer> {
         try
         {
             // Defined URL  where to send data
-            URL url = new URL("http:/192.168.194.95:8080/EyeClass/login");
+            URL url = new URL(Constants.LoginServlet);
 
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoOutput(true);
