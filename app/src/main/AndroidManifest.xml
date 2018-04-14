@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StudentLesson"
+            android:name=".Student.StudentLesson"
             android:label="@string/title_activity_student_lesson"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

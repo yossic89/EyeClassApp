@@ -1,4 +1,4 @@
-package eyeclass.eyeclassapp;
+package eyeclass.eyeclassapp.Student;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
+import eyeclass.eyeclassapp.R;
 
 public class StudentLesson extends AppCompatActivity implements OnPageChangeListener {
 
@@ -38,7 +39,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         //DELETE
 
         try {
-            new StartLesson().execute().get();
+            //new StartLesson().execute().get(); //TODO = this is for teacher !!!!!!!!
             InputStream pdf = new pdf().execute().get();
 
             pdfView.fromStream(pdf).onPageChange(this).load();
@@ -61,7 +62,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=display_pdf";
-                url = new URL(Constants.Connections.TeacherServlet);
+                url = new URL(Constants.Connections.StudentServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
