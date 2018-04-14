@@ -17,7 +17,7 @@ public class Constants {
     }
 
     public static class Student{
-        public static int CheckActiveLessonMS = 500;
+        public static int CheckActiveLessonMS = 1000;
     }
 
 }

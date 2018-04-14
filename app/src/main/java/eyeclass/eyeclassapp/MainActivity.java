@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
 import eyeclass.eyeclassapp.Student.StudentLesson;
+import eyeclass.eyeclassapp.Student.StudentSchedule;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             int permmision = new ConnectionTask().execute(id, password).get();
             System.out.println("YOSSISSSSSIIIII " + permmision);
-            startActivity(new Intent(MainActivity.this, StudentLesson.class));
+            startActivity(new Intent(this, StudentSchedule.class));
+
         }
     }
 
