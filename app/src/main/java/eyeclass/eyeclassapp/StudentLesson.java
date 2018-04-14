@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -23,9 +24,10 @@ import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
 
-public class StudentLesson extends AppCompatActivity {
+public class StudentLesson extends AppCompatActivity implements OnPageChangeListener {
 
     PDFView pdfView;
+    int m_page;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,16 @@ public class StudentLesson extends AppCompatActivity {
             new StartLesson().execute().get();
             InputStream pdf = new pdf().execute().get();
 
-            pdfView.fromStream(pdf).load();
+            pdfView.fromStream(pdf).onPageChange(this).load();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onPageChanged(int page, int pageCount) {
+        m_page = page;
     }
 
     class pdf extends AsyncTask<Void,Void,InputStream>
@@ -54,7 +61,7 @@ public class StudentLesson extends AppCompatActivity {
             URL url = null;
             try {
                 String data = "req=display_pdf";
-                url = new URL(Constants.TeacherServlet);
+                url = new URL(Constants.Connections.TeacherServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
@@ -81,7 +88,7 @@ public class StudentLesson extends AppCompatActivity {
             URL url = null;
             try {
                 String data = "req=demo_lesson";
-                url = new URL(Constants.TeacherServlet);
+                url = new URL(Constants.Connections.TeacherServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
