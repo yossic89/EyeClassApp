@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".teacher.TeacherLesson"
+    tools:showIn="@layout/activity_teacher_lesson">
+
+
+    <ImageView
+        android:id="@+id/imageViewQuestions"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.897"
+        app:layout_constraintLeft_creator="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/questions" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        android:stretchColumns="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintLeft_creator="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewQuestions"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow android:background="#FF1E79E9"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp">
+
+            <TextView
+                android:padding="3dip"
+                android:text="הוצג"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="תשובה"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="שאלה"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:gravity="right"
+                android:padding="3dip"
+                android:text="נושא"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:textSize="8sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:padding="3dip"
+                android:text="הצג שאלה"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="O(m+n)"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="סיבוכיות BFS"
+                tools:textSize="8sp" />
+
+            <TextView
+                android:gravity="right"
+                android:padding="3dip"
+                android:text="חיפוש בגרף"
+                tools:textSize="8sp" />
+        </TableRow>
+    </TableLayout>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="466dp"
+        android:layout_height="554dp"
+        android:layout_marginEnd="404dp"
+        android:layout_marginStart="404dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_creator="250"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="126dp" />
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.075"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/students" />
+
+
+    <ListView
+        android:id="@+id/studList"
+        android:layout_width="170dp"
+        android:layout_height="476dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="56dp"
+        android:layout_marginStart="57dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 import eyeclass.eyeclassapp.Student.StudentLesson;
 import eyeclass.eyeclassapp.Student.StudentSchedule;
+import eyeclass.eyeclassapp.teacher.TeacherLesson;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,9 +67,10 @@ public class MainActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            int permmision = new ConnectionTask().execute(id, password).get();
-            System.out.println("YOSSISSSSSIIIII " + permmision);
-            startActivity(new Intent(this, StudentSchedule.class));
+            //int permmision = new ConnectionTask().execute(id, password).get();
+            //System.out.println("YOSSISSSSSIIIII " + permmision);
+            //startActivity(new Intent(this, StudentSchedule.class));
+            startActivity(new Intent(this, TeacherLesson.class));
 
         }
     }
