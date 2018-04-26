@@ -36,7 +36,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_lesson);
 
-        pdfView = (PDFView) findViewById(R.id.pdfView);
+        pdfView = (PDFView) findViewById(R.id.StudentPDFView);
         //DELETE
 
         try {
@@ -83,38 +83,5 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         }
     }
 
-    class StartLesson extends AsyncTask<Void,Void,Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                String data = "req=demo_lesson";
-                url = new URL(Constants.Connections.TeacherServlet);
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.connect();
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                // Read Server Response
-                while((line = reader.readLine()) != null)
-                {
-                    // Append server response in string
-                    sb.append(line);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }
 
 }

@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.UnsupportedEncodingException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.concurrent.ExecutionException;
 
+import Infra.Constants;
 import eyeclass.eyeclassapp.Student.StudentLesson;
 import eyeclass.eyeclassapp.Student.StudentSchedule;
 import eyeclass.eyeclassapp.teacher.TeacherLesson;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -67,11 +72,16 @@ public class MainActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            //int permmision = new ConnectionTask().execute(id, password).get();
-            //System.out.println("YOSSISSSSSIIIII " + permmision);
-            //startActivity(new Intent(this, StudentSchedule.class));
-            startActivity(new Intent(this, TeacherLesson.class));
-
+            int permmision = new ConnectionTask().execute(id, password).get();
+            switch (permmision)
+            {
+                case Infra.Constants.Permissions.Teacher:
+                    startActivity(new Intent(this, TeacherLesson.class));
+                    break;
+                case Constants.Permissions.Student:
+                    startActivity(new Intent(this, StudentSchedule.class));
+                    break;
+            }
         }
     }
 

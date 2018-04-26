@@ -54,8 +54,13 @@ public class TeacherLesson extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_lesson);
-        pdfView = (PDFView) findViewById(R.id.pdfView);
-        new RetrivePDFStream().execute("http://www.pdf995.com/samples/pdf.pdf");
+        pdfView = (PDFView) findViewById(R.id.TeacherPDFView);
+        try{
+            new StartLesson().execute().get();
+            new pdf().execute();
+        }
+        catch (Exception e) { e.printStackTrace();}
+        //new RetrivePDFStream().execute("http://www.pdf995.com/samples/pdf.pdf");
         ListView listView = (ListView)findViewById(R.id.studList);
         CustomListAdapter adapter=new CustomListAdapter(this, studNames, images);
         listView.setAdapter(adapter);
@@ -84,6 +89,72 @@ public class TeacherLesson extends AppCompatActivity {
         protected void onPostExecute(InputStream inputStream){
             pdfView.fromStream(inputStream).load();
 
+        }
+    }
+
+     class pdf extends AsyncTask<Void,Void,InputStream>
+    {
+
+        @Override
+        protected InputStream doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=display_pdf";
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+                url = new URL(Infra.Constants.Connections.TeacherServlet);
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                return conn.getInputStream();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+         @Override
+        protected void onPostExecute(InputStream inputStream){
+            pdfView.fromStream(inputStream).load();
+        }
+    }
+
+    class StartLesson extends AsyncTask<Void,Void,Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=demo_lesson";
+                url = new URL(Infra.Constants.Connections.TeacherServlet);
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+
+                java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while((line = reader.readLine()) != null)
+                {
+                    // Append server response in string
+                    sb.append(line);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
     }
 
