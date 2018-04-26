@@ -95,7 +95,7 @@
     </TableLayout>
 
     <com.github.barteksc.pdfviewer.PDFView
-        android:id="@+id/pdfView"
+        android:id="@+id/TeacherPDFView"
         android:layout_width="466dp"
         android:layout_height="554dp"
         android:layout_marginEnd="404dp"

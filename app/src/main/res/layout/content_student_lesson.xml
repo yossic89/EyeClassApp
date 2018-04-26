@@ -11,6 +11,6 @@
     <com.github.barteksc.pdfviewer.PDFView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/pdfView" />
+        android:id="@+id/StudentPDFView" />
 
 </android.support.constraint.ConstraintLayout>
