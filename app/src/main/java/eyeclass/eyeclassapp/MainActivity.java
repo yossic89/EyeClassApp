@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError("הסיסמא צריכה להכיל יותר מ 4 תווים");
+            mPasswordView.setError("Your password should contain 5 characters or more");
             focusView = mPasswordView;
             cancel = true;
         }
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
+            //startActivity(new Intent(this, TeacherLesson.class));
             int permmision = new ConnectionTask().execute(id, password).get();
             switch (permmision)
             {

@@ -2,6 +2,16 @@
     <string name="app_name">EyeClassApp4</string>
     <string name="title_activity_student_lesson">StudentLesson</string>
     <string name="title_activity_student_schedule">StudentSchedule</string>
+    <string name="password_validation">Your password should contain 5 characters or more</string>
+
+    <string-array name="view_students_option_array">
+        <item>All</item>
+        <item>Not Following</item>
+        <item>Following</item>
+        <item>Not Connected</item>
+
+    </string-array>
+
 </resources>
 
 
