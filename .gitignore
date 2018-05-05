@@ -6,6 +6,7 @@
 /.idea/workspace.xml
 .DS_Store
 /build
+/openCV/build
 /captures
 .externalNativeBuild
 
