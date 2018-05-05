@@ -3,11 +3,14 @@ package Infra;
 public class Constants {
 
     public static class Connections{
-        private static String ip = "192.168.205.144";
-        public static String HOST = "http://" + ip +":8080/EyeClass";
-        public static String TeacherServlet = HOST +"/teacher";
-        public static String LoginServlet = HOST + "/login";
-        public static String StudentServlet = HOST + "/student";
+
+        private static String ip = "192.116.98.70";
+        public static String HOST() {return "http://" + ip +":8080/EyeClass";}
+        public static String TeacherServlet() {return HOST() +"/teacher";}
+        public static String LoginServlet() {return HOST() + "/login";}
+        public static String StudentServlet() {return HOST() + "/student";}
+
+        public static void setIP(String _ip){ip = _ip;}
     }
 
     public static class Permissions{

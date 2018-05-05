@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkForExtras();
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
         setContentView(R.layout.activity_main);
@@ -48,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void checkForExtras()
+    {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null)
+        {
+            if (extras.containsKey("developer_ip"))
+                Constants.Connections.setIP(this.getIntent().getExtras().getString(("developer_ip")));
+        }
     }
 
     private void attemptLogin() throws UnsupportedEncodingException, ExecutionException, InterruptedException {
@@ -76,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
             int permmision = new ConnectionTask().execute(id, password).get();
             switch (permmision)
             {
+                case Constants.Permissions.NoPermission:
+                    mPasswordView.setText("");
+                    mPasswordView.setError("Wrong credentials");
+                    break;
                 case Infra.Constants.Permissions.Teacher:
                     startActivity(new Intent(this, TeacherLesson.class));
                     break;

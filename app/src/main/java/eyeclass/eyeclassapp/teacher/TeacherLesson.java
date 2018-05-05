@@ -188,7 +188,7 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
             try {
                 String data = "req=display_pdf";
                 data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
-                url = new URL(Infra.Constants.Connections.TeacherServlet);
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
@@ -217,7 +217,7 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
             URL url = null;
             try {
                 String data = "req=demo_lesson";
-                url = new URL(Infra.Constants.Connections.TeacherServlet);
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");

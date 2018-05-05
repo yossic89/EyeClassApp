@@ -35,7 +35,7 @@ public class ConnectionTask extends AsyncTask<String, Void, Integer> {
         try
         {
             // Defined URL  where to send data
-            URL url = new URL(Constants.Connections.LoginServlet);
+            URL url = new URL(Constants.Connections.LoginServlet());
 
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoOutput(true);
