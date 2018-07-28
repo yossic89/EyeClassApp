@@ -3,14 +3,11 @@ package Infra;
 public class Constants {
 
     public static class Connections{
-
-        private static String ip = "192.116.98.70";
-        public static String HOST() {return "http://" + ip +":8080/EyeClass";}
-        public static String TeacherServlet() {return HOST() +"/teacher";}
-        public static String LoginServlet() {return HOST() + "/login";}
-        public static String StudentServlet() {return HOST() + "/student";}
-
-        public static void setIP(String _ip){ip = _ip;}
+        private static String ip = "192.168.205.144";
+        public static String HOST = "http://" + ip +":8080/EyeClass";
+        public static String TeacherServlet = HOST +"/teacher";
+        public static String LoginServlet = HOST + "/login";
+        public static String StudentServlet = HOST + "/student";
     }
 
     public static class Permissions{
@@ -27,10 +24,10 @@ public class Constants {
         public static final String Class_id = "class_id";
     }
 
-    public enum StudentActiveStateNew {
-        Unknown,
-        Concentrated,
-        NotConcentrated;
+    public static class StudentActiveState{
+        public static final int NotConnected = 0;
+        public static final int Following = 1;
+        public static final int NotFollowing = 2;
     }
 
     public static class Student{

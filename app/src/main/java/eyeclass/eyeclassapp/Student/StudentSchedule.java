@@ -41,7 +41,7 @@ public class StudentSchedule extends AppCompatActivity {
             boolean keepWaiting = true;
             BufferedReader reader = null;
             try{
-                URL url = new URL(Constants.Connections.StudentServlet());
+                URL url = new URL(Constants.Connections.StudentServlet);
 
                 while (keepWaiting)
                 {

@@ -63,7 +63,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=display_pdf";
-                url = new URL(Constants.Connections.StudentServlet());
+                url = new URL(Constants.Connections.StudentServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");

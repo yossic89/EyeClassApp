@@ -19,22 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import Infra.Constants;
+import Infra.Constants.StudentActiveState;
 import eyeclass.eyeclassapp.R;
 
 public class TeacherLesson extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -46,37 +40,55 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        //local students list
+        StudentActiveItem a = new StudentActiveItem("Yamit Shefler", StudentActiveState.NotFollowing);
+        StudentActiveItem b = new StudentActiveItem("Gal Talya", StudentActiveState.Following);
+        StudentActiveItem c = new StudentActiveItem("Benni Cohen", StudentActiveState.Following);
+        StudentActiveItem d = new StudentActiveItem("Noam Shay", StudentActiveState.NotConnected);
+        StudentActiveItem e = new StudentActiveItem("Yossi Cohen", StudentActiveState.NotFollowing);
+        StudentActiveItem f = new StudentActiveItem("Ido Levi", StudentActiveState.Following);
+        StudentActiveItem g = new StudentActiveItem("Asaf Dan", StudentActiveState.Following);
+        StudentActiveItem h = new StudentActiveItem("Mor Perets", StudentActiveState.NotFollowing);
+        StudentActiveItem l = new StudentActiveItem("Omer Lerer", StudentActiveState.NotConnected);
+        StudentActiveItem m = new StudentActiveItem("Jason Perets", StudentActiveState.Following);
+
         studList = new ArrayList<StudentActiveItem>();
-        setContentView(R.layout.activity_teacher_lesson);
-        pdfView = (PDFView) findViewById(R.id.TeacherPDFView);
-        try{
-            new StartLesson().execute().get();
-            new pdf().execute();
-            new studentsStatus().execute();
-        }
-        catch (Exception er) { er.printStackTrace();
-        }
-
-
-    }
-
-    public void displayStudentsStatus()
-    {
+        studList.add(a);
+        studList.add(b);
+        studList.add(c);
+        studList.add(d);
+        studList.add(e);
+        studList.add(f);
+        studList.add(g);
+        studList.add(h);
+        studList.add(l);
+        studList.add(m);
         String[] studNames =new String[studList.size()];
 
         Integer[] images = new Integer[studNames.length];
 
         int i=0;
         for (StudentActiveItem k:studList ) {
-            if(k.state == Constants.StudentActiveStateNew.Concentrated)
+            if(k.state == StudentActiveState.Following)
                 images[i]=R.drawable.greendot;
-            else if (k.state == Constants.StudentActiveStateNew.NotConcentrated)
+            else if (k.state == StudentActiveState.NotFollowing)
                 images[i]=R.drawable.reddot;
-            else if (k.state == Constants.StudentActiveStateNew.Unknown)
+            else if (k.state == StudentActiveState.NotConnected)
                 images[i]=R.drawable.greydot;
             studNames[i]=k.name;
             i++;
+        }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_teacher_lesson);
+        pdfView = (PDFView) findViewById(R.id.TeacherPDFView);
+        //new RetrivePDFStream().execute("http://www.pdf995.com/samples/pdf.pdf");
+        try{
+            new StartLesson().execute().get();
+            new pdf().execute();
+        }
+        catch (Exception er) { er.printStackTrace();
         }
 
         ListView listView = (ListView)findViewById(R.id.studList);
@@ -97,6 +109,7 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter2);
     }
+
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         //activate the correct choice
         displayByPosition(pos);
@@ -108,11 +121,11 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
         for (StudentActiveItem k:studList ) {
             if (position==0)//All
                 studFilter.add(k);
-            else if (position==1 && k.state == Constants.StudentActiveStateNew.NotConcentrated)
+            else if (position==1 && k.state == StudentActiveState.NotFollowing)
                 studFilter.add(k);
-            else if (position==2 && k.state == Constants.StudentActiveStateNew.Concentrated)
+            else if (position==2 && k.state == StudentActiveState.Following)
                 studFilter.add(k);
-            else if (position==3 && k.state == Constants.StudentActiveStateNew.Unknown)
+            else if (position==3 && k.state == StudentActiveState.NotConnected)
                 studFilter.add(k);
         }
         String[] studNames =new String[studFilter.size()];
@@ -121,11 +134,11 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
 
         int i=0;
         for (StudentActiveItem k:studFilter ) {
-            if(k.state == Constants.StudentActiveStateNew.Concentrated)
+            if(k.state == StudentActiveState.Following)
                 images[i]=R.drawable.greendot;
-            else if (k.state == Constants.StudentActiveStateNew.NotConcentrated)
+            else if (k.state == StudentActiveState.NotFollowing)
                 images[i]=R.drawable.reddot;
-            else if (k.state == Constants.StudentActiveStateNew.Unknown)
+            else if (k.state == StudentActiveState.NotConnected)
             images[i]=R.drawable.greydot;
             studNames[i]=k.name;
             i++;
@@ -137,9 +150,9 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
 
     class StudentActiveItem{
         String name;
-        Constants.StudentActiveStateNew state;
+        int state;
 
-        public StudentActiveItem(String _name, Constants.StudentActiveStateNew _state) {
+        public StudentActiveItem(String _name, int _state) {
             name=_name;
             state=_state;
         }
@@ -167,56 +180,6 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
-    class studentsStatus extends AsyncTask<Void, Void, Void>
-    {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                String data = "req=students_status";
-                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
-                url = new URL(Infra.Constants.Connections.TeacherServlet());
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.connect();
-                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
-                wr.write( data );
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                // Read Server Response
-                while((line = reader.readLine()) != null)
-                {
-                    // Append server response in string
-                    sb.append(line);
-                }
-
-                Map<String, String> stuendts_status = new Gson().fromJson(sb.toString(), new TypeToken<Map<String, String>>(){}.getType());
-                studList.clear();
-                for (String key : stuendts_status.keySet())
-                {
-                    Infra.Constants.StudentActiveStateNew e_val = Infra.Constants.StudentActiveStateNew.valueOf(stuendts_status.get(key));
-                    studList.add(new StudentActiveItem(key, e_val));
-
-                }
-
-                return null;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            displayStudentsStatus();
-        }
-    }
-
      class pdf extends AsyncTask<Void,Void,InputStream> {
 
         @Override
@@ -225,7 +188,7 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
             try {
                 String data = "req=display_pdf";
                 data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
-                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                url = new URL(Infra.Constants.Connections.TeacherServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
@@ -254,7 +217,7 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
             URL url = null;
             try {
                 String data = "req=demo_lesson";
-                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                url = new URL(Infra.Constants.Connections.TeacherServlet);
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");

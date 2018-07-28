@@ -99,4 +99,20 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.983" />
 
+    <RelativeLayout
+        android:layout_width="182dp"
+        android:layout_height="221dp"
+        android:layout_weight="1"
+        tools:layout_editor_absoluteX="4dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <ImageView
+            android:id="@+id/backIV"
+            android:layout_width="127dp"
+            android:layout_height="179dp"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"></ImageView>
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
