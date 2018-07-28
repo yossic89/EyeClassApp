@@ -129,7 +129,6 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
         public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request,
                                        @NonNull TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
-            System.out.println("YOSSI capture");
             if (picturesTaken.lastEntry() != null) {
                 capturingListener.onCaptureDone(picturesTaken.lastEntry().getKey(), picturesTaken.lastEntry().getValue());
                 Log.i(TAG, "done taking picture from camera " + cameraDevice.getId());
