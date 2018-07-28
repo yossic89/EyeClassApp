@@ -27,10 +27,10 @@ public class Constants {
         public static final String Class_id = "class_id";
     }
 
-    public static class StudentActiveState{
-        public static final int NotConnected = 0;
-        public static final int Following = 1;
-        public static final int NotFollowing = 2;
+    public enum StudentActiveStateNew {
+        Unknown,
+        Concentrated,
+        NotConcentrated;
     }
 
     public static class Student{
