@@ -45,6 +45,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     int m_page;
     private boolean sendMyImage;
     private int sendDeviationTimerMS;
+    EyesDetector eyesDetector = new EyesDetector();
+
     //camera
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_CODE = 1;
 
@@ -61,24 +63,22 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         setContentView(R.layout.activity_student_lesson);
         new properties().execute();
         pdfView = (PDFView) findViewById(R.id.StudentPDFView);
-        //DELETE
-
         try {
-            //new StartLesson().execute().get(); //TODO = this is for teacher !!!!!!!!
             InputStream pdf = new pdf().execute().get();
 
             pdfView.fromStream(pdf).onPageChange(this).load();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //init eyes detector
+        eyesDetector.initClassifiers(getAssets(), getFilesDir());
         //camera
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
         pictureService = PictureCapturingServiceImpl.getInstance(this);
-        //   for(int i=0;i<5;i++) {
         pictureService.startCapturing(this);
 
-        //  }
+
     }
 
 
@@ -173,15 +173,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                     MY_PERMISSIONS_REQUEST_ACCESS_CODE);
         }
     }
-    /**
-     *
-     * @param text The message to show
-     */
-    private void showToast(final String text) {
-        runOnUiThread(() ->
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show()
-        );
-    }
 
     /**
      * We've finished taking pictures from all phone's cameras
@@ -189,16 +180,14 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     @Override
     public void onDoneCapturingAllPhotos(TreeMap<String, byte[]> picturesTaken) {
         if (picturesTaken != null && !picturesTaken.isEmpty()) {
-            showToast("Done capturing all photos!");
             return;
         }
-        showToast("No camera detected!");
     }
 
-    class deviationReportSend extends AsyncTask<deviationData, Void, Void>
+    class deviationReportSend extends AsyncTask<DeviationData, Void, Void>
     {
         @Override
-        protected Void doInBackground(deviationData... deviationData) {
+        protected Void doInBackground(DeviationData... deviationData) {
             URL url = null;
             try {
                 String data = "req=measure_data&";
@@ -213,10 +202,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                 wr.write( data );
                 wr.flush();
-                /*Gson gson = new Gson();
-                String json = gson.toJson(deviationData[0]);
-                wr.write(json);
-                wr.flush();*/
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 StringBuilder sb = new StringBuilder();
                 String line = null;
@@ -236,9 +221,88 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
     }
 
-    public class deviationData
+    class checkIfLessonDone extends AsyncTask<Void, Void, Boolean>
     {
-        public deviationData(int _eyes, byte[] _photo)
+
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                //sleep before checking
+                Thread.sleep(sendDeviationTimerMS);
+                String data = "req=finish_lesson";
+                url = new URL(Constants.Connections.StudentServlet());
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write( data );
+                wr.flush();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while((line = reader.readLine()) != null)
+                {
+                    // Append server response in string
+                    sb.append(line);
+                }
+                return  Boolean.parseBoolean(sb.toString().trim());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+    }
+
+    /**
+     * Displaying the pictures taken.
+     */
+    @Override
+    public void onCaptureDone(String pictureUrl, byte[] pictureData) {
+        if (pictureData != null && pictureUrl != null) {
+            //Send deviation data
+            int eyesCount = eyesDetector.getEyesFromImage(pictureData);
+            //send photo if needed, otherwise send null
+            byte[] picture = null;
+            if (sendMyImage)
+                picture = pictureData;
+            DeviationData dd = new DeviationData(eyesCount, picture);
+            new deviationReportSend().execute(dd);
+        }
+        try
+        {
+            if (!new checkIfLessonDone().execute().get())
+            {
+                //another pic
+                pictureService.startCapturing(this);
+            }
+
+        }
+        catch (Exception e){e.printStackTrace();}
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_CODE: {
+                if (!(grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    checkPermissions();
+                }
+            }
+        }
+    }
+
+    public class DeviationData
+    {
+        public DeviationData(int _eyes, byte[] _photo)
         {
             eyes_count = _eyes;
             photo = _photo;
@@ -264,37 +328,5 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         int page_num;
         int eyes_count;
 
-    }
-    /**
-     * Displaying the pictures taken.
-     */
-    @Override
-    public void onCaptureDone(String pictureUrl, byte[] pictureData) {
-        if (pictureData != null && pictureUrl != null) {
-            //TEST
-            EyesDetector d = new EyesDetector();
-            d.initClassifiers(getAssets(), getFilesDir());
-            int a = d.getEyesFromImage(pictureData);
-            deviationData dd = new deviationData(a, pictureData);
-            new deviationReportSend().execute(dd);
-            //another pic
-            pictureService.startCapturing(this);
-            showToast("Picture saved to " + pictureUrl);
-        }
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_CODE: {
-                if (!(grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    checkPermissions();
-                }
-            }
-        }
     }
 }

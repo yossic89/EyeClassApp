@@ -113,11 +113,11 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
             boolean a = ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
             boolean b = ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
             if (a && b ){
-                System.out.println("ZZZZZZZZZZZZ");
+                System.out.println("Debug: Open Camera" + currentCameraId);
                 manager.openCamera(currentCameraId, stateCallback, null);
             }
             else{
-                System.out.println("BLATTTTT a: " + a +" b: " + b);
+                System.out.println("Error a: " + a +" b: " + b);
             }
         } catch (final CameraAccessException e) {
             Log.e(TAG, " exception occurred while opening camera " + currentCameraId, e);
