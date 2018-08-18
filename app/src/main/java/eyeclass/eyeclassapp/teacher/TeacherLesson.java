@@ -33,14 +33,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
 import Infra.Constants;
 import eyeclass.eyeclassapp.R;
 
-public class TeacherLesson extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class TeacherLesson extends AppCompatActivity implements OnPageChangeListener, AdapterView.OnItemSelectedListener{
 
     PDFView pdfView;
-    int m_page;
 
     private List<StudentActiveItem> studList;
 
@@ -52,13 +52,12 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
         pdfView = (PDFView) findViewById(R.id.TeacherPDFView);
         try{
             new StartLesson().execute().get();
-            new pdf().execute();
+            InputStream pdf = new pdf().execute().get();
+            pdfView.fromStream(pdf).onPageChange(this).load();
             new studentsStatus().execute();
         }
         catch (Exception er) { er.printStackTrace();
         }
-
-
     }
 
     public void displayStudentsStatus()
@@ -133,6 +132,43 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
         ListView listView = (ListView)findViewById(R.id.studList);
         CustomListAdapter adapter=new CustomListAdapter(this, studNames, images);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPageChanged(int page, int pageCount) {
+        new sendTeacherPage().execute(page);
+    }
+
+    class sendTeacherPage extends AsyncTask<Integer, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            URL url = null;
+            try {
+                String data = "req=teacher_page";
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+                data += "&page=" + integers[0];
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+            }
+            catch (Exception e){}
+            return null;
+        }
     }
 
     class StudentActiveItem{
@@ -240,11 +276,6 @@ public class TeacherLesson extends AppCompatActivity implements AdapterView.OnIt
                 e.printStackTrace();
             }
             return null;
-        }
-
-         @Override
-        protected void onPostExecute(InputStream inputStream){
-            pdfView.fromStream(inputStream).load();
         }
     }
 
