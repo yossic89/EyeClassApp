@@ -2,6 +2,7 @@ package eyeclass.eyeclassapp.Student;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
@@ -231,12 +232,16 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
     }
 
-    class checkIfLessonDone extends AsyncTask<Void, Void, Boolean>
+    class checkIfLessonDone extends AsyncTask<Void, Void, Void>
     {
-
-
+        boolean status = true;
+        PictureCapturingListener activity;
+        checkIfLessonDone(PictureCapturingListener _activity)
+        {
+            activity = _activity;
+        }
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Void doInBackground(Void... voids) {
             URL url = null;
             try {
                 //sleep before checking
@@ -259,12 +264,18 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                     // Append server response in string
                     sb.append(line);
                 }
-                return  Boolean.parseBoolean(sb.toString().trim());
+                status = Boolean.parseBoolean(sb.toString().trim());
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-            return true;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result){
+            if (!status)
+                pictureService.startCapturing(activity);
         }
     }
 
@@ -285,12 +296,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         }
         try
         {
-            if (!new checkIfLessonDone().execute().get())
-            {
-                //another pic
-                pictureService.startCapturing(this);
-            }
-
+            new checkIfLessonDone(this).execute();
         }
         catch (Exception e){e.printStackTrace();}
     }
