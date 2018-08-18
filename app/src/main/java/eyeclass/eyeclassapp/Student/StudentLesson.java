@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -72,6 +73,15 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         }
         //init eyes detector
         eyesDetector.initClassifiers(getAssets(), getFilesDir());
+        //fulscreen
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        decorView.setSystemUiVisibility(uiOptions);
         //camera
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
