@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/appicon" />
 
-    <EditText
+    <!--EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,9 +28,9 @@
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintVertical_bias="0.307" /-->
 
-    <EditText
+    <!--EditText
         android:id="@+id/editText6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,9 +42,9 @@
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.488" />
+        app:layout_constraintVertical_bias="0.488" /-->
 
-    <EditText
+    <!--EditText
         android:id="@+id/editText8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintVertical_bias="0.666" /-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
@@ -79,7 +79,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="518dp" />
 
-    <Spinner
+    <!--Spinner
         android:id="@+id/view_user_type_spinner"
         android:layout_width="335dp"
         android:layout_height="38dp"
@@ -88,18 +88,21 @@
         app:layout_constraintHorizontal_bias="0.156"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.361" />
+        app:layout_constraintVertical_bias="0.361" /-->
+
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose User Type"
-        app:layout_constraintBottom_toTopOf="@+id/view_user_type_spinner"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.33"
-        app:layout_constraintStart_toEndOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+        android:layout_marginBottom="8dp"
+        android:text="Choose teacher curriculum:"
+        app:layout_constraintBottom_toTopOf="@+id/view_cur_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toEndOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.96" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -121,14 +124,29 @@
         app:layout_constraintGuide_begin="20dp" />
 
     <!-- ***************************************SPINER*******************-->
+
+
     <Spinner
         android:id="@+id/view_cur_spinner"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="335dp"
+        android:layout_height="39dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="780dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.445"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
     <!-- ***************************************SPINER*******************-->
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.667"
+        app:layout_constraintStart_toEndOf="@+id/guideline7" />
 
 </android.support.constraint.ConstraintLayout>
