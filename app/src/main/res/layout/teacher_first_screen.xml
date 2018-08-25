@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Admin.AdminAddUser">
+    tools:context=".teacher.TeacherMainActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -46,7 +46,7 @@
         app:layout_constraintGuide_end="539dp" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/buttonChooseLesson"
         android:layout_width="234dp"
         android:layout_height="96dp"
         android:text="Choose a Lesson"
@@ -60,7 +60,7 @@
         tools:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/buttonAddLesson"
         android:layout_width="234dp"
         android:layout_height="96dp"
         android:text="Add a new Lesson"
@@ -74,7 +74,7 @@
         tools:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/buttonDistractionReport"
         android:layout_width="234dp"
         android:layout_height="96dp"
         android:text="Display Distraction Report"
@@ -88,7 +88,7 @@
         tools:textColor="@android:color/white" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/buttonQuestionsReport"
         android:layout_width="234dp"
         android:layout_height="96dp"
         android:text="Display Questions Report"
