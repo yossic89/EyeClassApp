@@ -86,13 +86,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         //camera
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
-        System.out.println("111111111111111111111111111111");
         pictureService = PictureCapturingServiceImpl.getInstance(this);
-        System.out.println("2222222222222222222222");
         pictureService.startCapturing(this);
-        System.out.println("3333333333333333333333");
-
-
     }
 
 

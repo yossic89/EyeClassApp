@@ -12,99 +12,106 @@
     <ImageView
         android:id="@+id/questions_headline"
         android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="36dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.897"
+        app:layout_constraintHorizontal_bias="0.868"
         app:layout_constraintLeft_creator="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/questions" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:fontFamily="serif"
+        android:text="Employees"
+        android:gravity="center"/>
+
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tableLayout"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="200dp"
+        android:id="@+id/questionsTableLayout"
+        android:layout_width="334dp"
+        android:layout_height="528dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="left"
         android:stretchColumns="4"
+        android:textAlignment="gravity"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_creator="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questions_headline"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/questions_headline">
 
         <TableRow
-            android:layout_width="fill_parent"
+            android:id="@+id/teacher_que_row"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_margin="1dp"
-            android:background="#FF1E79E9">
+            android:background="#FF1E79E9"
+            android:gravity="left"
+            android:padding="10dp">
+
+            <!--        <TextView
+                        android:id="@+id/show_que"
+                        android:layout_width="38dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="3dip"
+                        android:text="הצג"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        tools:textSize="8sp" /> -->
 
             <TextView
+                android:id="@+id/answer_que"
+                android:layout_width="47dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:padding="3dip"
-                android:text="הוצג"
+                android:text="Question Topic"
+                android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 tools:textSize="8sp" />
 
             <TextView
+                android:id="@+id/question_que"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:padding="3dip"
-                android:text="תשובה"
+                android:textAlignment="textEnd"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 tools:textSize="8sp" />
 
-            <TextView
-                android:padding="3dip"
-                android:text="שאלה"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                tools:textSize="8sp" />
-
-            <TextView
-                android:gravity="right"
-                android:padding="3dip"
-                android:text="נושא"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                tools:textSize="8sp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:padding="3dip"
-                android:text="הצג שאלה"
-                tools:textSize="8sp" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="O(m+n)"
-                tools:textSize="8sp" />
-
-            <TextView
-                android:padding="3dip"
-                android:text="סיבוכיות BFS"
-                tools:textSize="8sp" />
-
-            <TextView
-                android:gravity="right"
-                android:padding="3dip"
-                android:text="חיפוש בגרף"
-                tools:textSize="8sp" />
+            <!--    <TextView
+                    android:id="@+id/topic_que"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="3dip"
+                    android:text="נושא"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    tools:textSize="8sp" /> -->
         </TableRow>
     </TableLayout>
 
+
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/TeacherPDFView"
-        android:layout_width="466dp"
-        android:layout_height="554dp"
-        android:layout_marginEnd="404dp"
-        android:layout_marginStart="404dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="687dp"
+        android:layout_height="547dp"
+        android:layout_marginStart="256dp"
         app:layout_constraintLeft_creator="250"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="126dp" />
+        tools:layout_editor_absoluteY="100dp" />
 
 
     <ImageView
@@ -147,6 +154,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
+    <!--
+        <Button
+            android:id="@+id/buttonShowQuestion"
+            android:padding="3dip"
+            android:text="show"
+            tools:textSize="8sp" />
+     -->
 
 
 </android.support.constraint.ConstraintLayout>

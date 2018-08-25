@@ -1,20 +1,26 @@
 package eyeclass.eyeclassapp.teacher;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +41,18 @@ import java.util.List;
 import java.util.Map;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import Infra.Constants;
+import eyeclass.eyeclassapp.Questions.QuestionPopUp;
 import eyeclass.eyeclassapp.R;
 
 public class TeacherLesson extends AppCompatActivity implements OnPageChangeListener, AdapterView.OnItemSelectedListener{
 
     PDFView pdfView;
+    private String questionsFromServer = null;
 
     private List<StudentActiveItem> studList;
 
@@ -55,9 +67,64 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             InputStream pdf = new pdf().execute().get();
             pdfView.fromStream(pdf).onPageChange(this).load();
             new studentsStatus().execute();
+            new QuestionsLesson().execute();
         }
         catch (Exception er) { er.printStackTrace();
         }
+
+        buildQuestionsSelection();
+    }
+
+    private void buildQuestionsSelection()
+    {
+        waitForQuestionsFromServer();
+        JSONArray jsonArrayQuestions;
+        String t ="";
+
+        try {
+            jsonArrayQuestions = new JSONArray(questionsFromServer);
+            for(int i=1;i<=jsonArrayQuestions.length();i++) {
+                JSONObject jsonObject = new JSONObject(jsonArrayQuestions.get(i-1).toString());
+                t = jsonObject.getString("topic");
+                TableLayout ll = (TableLayout) findViewById(R.id.questionsTableLayout);
+                TableRow row = new TableRow(this);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+                row.setLayoutParams(lp);
+                TextView topic = new TextView(this);
+                topic.setText(t);
+                topic.setTextColor(Color.parseColor("#000000"));
+                topic.setPadding(10, 10, 10, 10);
+                Button deliverQue = new Button(this);
+                deliverQue.setText("Show Question");
+                deliverQue.setTag(i-1);
+                deliverQue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            Intent intent = new Intent(TeacherLesson.this, QuestionPopUp.class);
+                            int index = Integer.valueOf(v.getTag().toString());
+                            JSONObject jsonObject = new JSONObject(jsonArrayQuestions.get(index).toString());
+                            intent.putExtra("questionData", jsonObject.toString());
+                            startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }});
+                // deliverQue.setPadding(20, 10, 10, 10);
+                row.setGravity(Gravity.LEFT);
+                ///row.setPadding(20,10,10,20);
+                row.addView(topic, new TableRow.LayoutParams(0,
+                        TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                row.addView(deliverQue);
+                ll.addView(row, i);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setQuestionsFromServer(String questions){
+        questionsFromServer = questions;
     }
 
     public void displayStudentsStatus()
@@ -309,6 +376,72 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             }
 
             return null;
+        }
+    }
+
+    class QuestionsLesson extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String s = getQuestionsFromServer();
+            setQuestionsFromServer(s);
+
+          /*      JSONArray jsonArrayQuestions = null;
+
+                jsonArrayQuestions = new JSONArray(questionsFromServer);
+                for (int i = 0; i < jsonArrayQuestions.length(); i++) {
+
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }*/
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+        }
+    }
+
+    private String getQuestionsFromServer() {
+        URL url = null;
+        StringBuilder sb = new StringBuilder();
+        try {
+            String data = "req=questions_lesson";
+            data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+            url = new URL(Infra.Constants.Connections.TeacherServlet());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            conn.connect();
+            java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = null;
+            // Read Server Response
+            while ((line = reader.readLine()) != null) {
+                // Append server response in string
+                sb.append(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    public void waitForQuestionsFromServer() {
+        int count = 0;
+        while(questionsFromServer == null && count < 60){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
+        if (count >= 60){
+            System.out.println("NO QUESTIONS FROM SERVER!!");
         }
     }
 

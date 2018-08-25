@@ -41,6 +41,13 @@
             android:label="@string/title_activity_student_schedule"
 
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!--Teacher-->
+        <activity android:name=".teacher.TeacherLesson"></activity>
+        <activity
+            android:name=".Questions.QuestionPopUp"
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
     </application>
 
 </manifest>
