@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EyeClassApp4</string>
+    <string name="app_name">EyeClass</string>
     <string name="title_activity_student_lesson">StudentLesson</string>
     <string name="title_activity_student_schedule">StudentSchedule</string>
     <string name="password_validation">Your password should contain 5 characters or more</string>
@@ -9,6 +9,7 @@
         <item>Not Following</item>
         <item>Following</item>
         <item>Not Connected</item>
+
     </string-array>
 
     <string-array name="view_user_type_option_array">
@@ -16,7 +17,6 @@
         <item>Teacher</item>
         <item>Admin</item>
     </string-array>
-
 </resources>
 
 
