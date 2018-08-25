@@ -48,6 +48,9 @@
             android:name=".Questions.QuestionPopUp"
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
+
+        <!--Lesson-->
+        <activity android:name=".lesson.UploadLesson"></activity>
     </application>
 
 </manifest>
