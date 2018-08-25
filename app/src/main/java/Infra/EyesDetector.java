@@ -40,6 +40,11 @@ public class EyesDetector {
             Imgproc.rectangle(source, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
                     new Scalar(200, 200, 100),2);
         }
+        //set image to processed image
+        byte[] processedImage = new byte[(int) (source.total() *
+                source.channels())];
+        source.get(0, 0, processedImage);
+        image = processedImage;
         return eyes.toArray().length;
     }
 
