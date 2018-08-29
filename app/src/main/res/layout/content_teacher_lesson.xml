@@ -24,11 +24,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:textSize="20sp"
         android:fontFamily="serif"
+        android:gravity="center"
         android:text="Employees"
-        android:gravity="center"/>
+        android:textColor="#000"
+        android:textSize="20sp" />
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/questionsTableLayout"
