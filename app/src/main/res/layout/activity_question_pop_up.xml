@@ -141,5 +141,28 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/que_pop_teacher_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="41dp"
+        android:layout_marginStart="73dp"
+        android:textColor="?android:attr/colorSecondary"
+        android:textSize="55sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/que_pop_teacher_timer"
+        android:layout_width="351dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/que_pop_teacher_t"
+        android:layout_marginStart="226dp"
+        android:textColor="@android:color/background_dark"
+        android:textSize="55sp"
+        android:textStyle="bold" />
+
 
 </RelativeLayout>

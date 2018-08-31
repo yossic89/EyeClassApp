@@ -65,7 +65,8 @@ public class QuestionPopUpStudent extends Activity {
         RadioButton option = null;
         randomOptions = questionData.getAllOptions();
         Collections.shuffle(randomOptions);
-        for(int i = 1;i <= questionData.getAllOptions().size(); i++){
+        int i;
+        for(i = 1;i <= questionData.getAllOptions().size(); i++){
             switch(i){
                 case 1:
                     option = (RadioButton)findViewById(R.id.que_pop_stud_opt1);
@@ -87,6 +88,29 @@ public class QuestionPopUpStudent extends Activity {
                     break;
             }
             option.setText(" " + option.getText() + randomOptions.get(i-1));
+        }
+        for(;i<=6;i++){
+            switch(i){
+                case 1:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt1);
+                    break;
+                case 2:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt2);
+                    break;
+                case 3:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt3);
+                    break;
+                case 4:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt4);
+                    break;
+                case 5:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt5);
+                    break;
+                case 6:
+                    option = (RadioButton)findViewById(R.id.que_pop_stud_opt6);
+                    break;
+            }
+            option.setButtonDrawable(null);
         }
     }
 

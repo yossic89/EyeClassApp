@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
@@ -24,6 +25,7 @@ public class QuestionPopUp extends Activity {
     public int index;
     public String questions = "";
     private Gson gson = new Gson();
+    private int time=31;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -39,7 +41,7 @@ public class QuestionPopUp extends Activity {
                 deliveryToStudentsTxt.setText("Question delivered\nto students");
                 deliveryToStudentsTxt.setTextColor(Color.parseColor("#870274"));
                 deliveryToStudents.setBackground(null);
-
+                displayTime();
             }});
 
     }
@@ -89,5 +91,28 @@ public class QuestionPopUp extends Activity {
         }
     }
 
+    private void displayTime(){
+        TextView t = (TextView)findViewById(R.id.que_pop_teacher_t);
+        t.setText("Time:");
+        TextView textTimer = (TextView)findViewById(R.id.que_pop_teacher_timer);
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                textTimer.setText("0:"+checkDigit(time));
+                time--;
+            }
+
+            public void onFinish() {
+                new DeliveryQuestionsTask().execute("clear");
+                textTimer.setText("DONE");
+            }
+
+        }.start();
+
+    }
+    public String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
+    }
 
 }

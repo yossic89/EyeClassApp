@@ -21,8 +21,13 @@ public class DeliveryQuestionsTask extends AsyncTask<String, Void, Integer> {
             data = URLEncoder.encode("questionData", "UTF-8")
                     + "=" + URLEncoder.encode(questionData, "UTF-8");
             data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
-            data += "&" + URLEncoder.encode("action", "UTF-8")
-                    + "=" + URLEncoder.encode("send", "UTF-8");
+            if (questionData.equals("clear")) {
+                data += "&" + URLEncoder.encode("action", "UTF-8")
+                        + "=" + URLEncoder.encode("clear", "UTF-8");
+            }else{
+                data += "&" + URLEncoder.encode("action", "UTF-8")
+                        + "=" + URLEncoder.encode("send", "UTF-8");
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

@@ -367,7 +367,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        System.out.println("Ani po po po po po " );
                         if(!isQuestionOn) {
                             try {
                                 int questionsRes = new GetQuestionTask().execute().get();
@@ -384,17 +383,15 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                                 e.printStackTrace();
                             }
                         }else{
-                            System.out.println("1111111111");
                             long different = System.currentTimeMillis() - startTime;
                             if (different >= timeForQuestion) {
-                                System.out.println("222222");
                                 finishActivity(100);
                                 isQuestionOn = false;
                             }
                         }
                     }});}
         };
-        timer.schedule(doAsynchronousTask, 0, 2000);
+        timer.schedule(doAsynchronousTask, 0, 1000);
 
     }
 
