@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -58,6 +57,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     private int sendDeviationTimerMS;
     EyesDetector eyesDetector = new EyesDetector();
     boolean isQuestionOn = false;
+    long startTime;
+    long timeForQuestion;
 
     //camera
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_CODE = 1;
@@ -94,7 +95,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         checkForQuestions();
-        
+
         //camera
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
@@ -366,26 +367,34 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        System.out.println("111111111111");
+                        System.out.println("Ani po po po po po " );
                         if(!isQuestionOn) {
-                            System.out.println("2222222222222222");
                             try {
                                 int questionsRes = new GetQuestionTask().execute().get();
                                 System.out.println("questionsRes " + questionsRes);
                                 if (questionsRes == 1) {
                                     Intent intent = new Intent(StudentLesson.this, QuestionPopUpStudent.class);
                                     intent.putExtra("questionData", GetQuestionTask.getQuestionData());
-                                    System.out.println("hereeeeeeeeeeeeee");
-                                    startActivity(intent);
+                                    startActivityForResult(intent,100);
                                     isQuestionOn = true;
+                                    startTime = System.currentTimeMillis();
+                                    timeForQuestion = 31000;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        }else{
+                            System.out.println("1111111111");
+                            long different = System.currentTimeMillis() - startTime;
+                            if (different >= timeForQuestion) {
+                                System.out.println("222222");
+                                finishActivity(100);
+                                isQuestionOn = false;
+                            }
                         }
                     }});}
         };
-        timer.schedule(doAsynchronousTask, 0, 5000);
+        timer.schedule(doAsynchronousTask, 0, 2000);
 
     }
 

@@ -1,12 +1,15 @@
 package eyeclass.eyeclassapp.Questions;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -15,29 +18,32 @@ import java.util.Collections;
 import java.util.List;
 
 import eyeclass.eyeclassapp.R;
+import eyeclass.eyeclassapp.Student.StudentLesson;
 
 public class QuestionPopUpStudent extends Activity {
     public int index;
     public String questions = "";
     private Gson gson = new Gson();
+    private List<String> randomOptions;
+    private QuestionData questionData;
+    private boolean isAnswerPopUpDisplay = false;
+    private int time=30;
+    private int timeOfAnswerPopUp = -1;
+    private final int ANSWER_POP_UP = 10;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_pop_up_student);
-
         displayQuestions();
-//        Button deliveryToStudents = (Button) findViewById(R.id.deliver_to_stud_btn);
-//        deliveryToStudents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new DeliveryQuestionsTask().execute(questions);
-//                TextView deliveryToStudentsTxt = (TextView) findViewById(R.id.delivery_que_text);
-//                deliveryToStudentsTxt.setText("Question delivered\nto students");
-//                deliveryToStudentsTxt.setTextColor(Color.parseColor("#870274"));
-//                deliveryToStudents.setBackground(null);
-//
-//            }});
+        displayTime();
+        Button submitBtn = (Button) findViewById(R.id.que_pop_stud_submit);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAnswer();
+            }});
 
     }
 
@@ -52,12 +58,12 @@ public class QuestionPopUpStudent extends Activity {
     private void displayQuestions(){
         String passedArg = getIntent().getExtras().getString("questionData");
         questions = passedArg;
-        QuestionData questionData = gson.fromJson(passedArg,QuestionData.class);
+        questionData = gson.fromJson(passedArg,QuestionData.class);
         setSizeOfPopUp();
         TextView question =(TextView)findViewById(R.id.que_pop_question_student);
         question.setText(" " + questionData.getQuestion());
         RadioButton option = null;
-        List<String> randomOptions = questionData.getAllOptions();
+        randomOptions = questionData.getAllOptions();
         Collections.shuffle(randomOptions);
         for(int i = 1;i <= questionData.getAllOptions().size(); i++){
             switch(i){
@@ -84,5 +90,58 @@ public class QuestionPopUpStudent extends Activity {
         }
     }
 
+    private void getAnswer(){
+        RadioGroup radioButtonGroup = (RadioGroup)findViewById(R.id.que_pop_stud_radio_group);
+        Button submitBtn = (Button) findViewById(R.id.que_pop_stud_submit);
+        submitBtn.setClickable(false);
+        submitBtn.setBackground(null);
+        submitBtn.setText("");
+        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+        View radioButton = radioButtonGroup.findViewById(radioButtonID);
+        int idx = radioButtonGroup.indexOfChild(radioButton);
+        RadioButton r = (RadioButton)  radioButtonGroup.getChildAt(idx);
+        String selectedtext = r.getText().toString().substring(1);
+        if (questionData.getRightAns().equals(selectedtext)) {
+            Intent intent = new Intent(QuestionPopUpStudent.this, GoodAnswer.class);
+            startActivityForResult(intent,ANSWER_POP_UP);
+            isAnswerPopUpDisplay = true;
+            timeOfAnswerPopUp = 4;
+        }
+        else{
+            Intent intent = new Intent(QuestionPopUpStudent.this, WrongAnswer.class);
+            startActivityForResult(intent,ANSWER_POP_UP);
+            isAnswerPopUpDisplay = true;
+            timeOfAnswerPopUp = 4;
+        }
+    }
 
+    private void displayTime(){
+        TextView textTimer = (TextView)findViewById(R.id.que_pop_stud_timer);
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                if (time < 5) textTimer.setTextColor(Color.parseColor("#ff0000"));
+                textTimer.setText("0:"+checkDigit(time));
+                time--;
+                if (isAnswerPopUpDisplay){
+                    timeOfAnswerPopUp--;
+                    if (timeOfAnswerPopUp == 0){
+                        finishActivity(ANSWER_POP_UP);
+                    }
+
+                }
+            }
+
+            public void onFinish() {
+                if(isAnswerPopUpDisplay) finishActivity(ANSWER_POP_UP);
+                textTimer.setText("DONE");
+            }
+
+        }.start();
+
+    }
+    public String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
+    }
 }

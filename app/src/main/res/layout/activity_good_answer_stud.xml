@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/good_answer">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="717dp"
+        android:layout_height="230dp"
+        android:text="GOOD ANSWER!"
+        android:textAlignment="center"
+        android:textColor="#0d119e"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="293dp"
+        tools:layout_editor_absoluteY="201dp" />
+</android.support.constraint.ConstraintLayout>
