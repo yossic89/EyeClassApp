@@ -34,8 +34,8 @@ public class QuestionPopUp extends Activity {
         deliveryToStudents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    new DeliveryQuestionsTask().execute(questions);
-                    TextView deliveryToStudentsTxt = (TextView) findViewById(R.id.delivery_que_text);
+                new DeliveryQuestionsTask().execute(questions);
+                TextView deliveryToStudentsTxt = (TextView) findViewById(R.id.delivery_que_text);
                 deliveryToStudentsTxt.setText("Question delivered\nto students");
                 deliveryToStudentsTxt.setTextColor(Color.parseColor("#870274"));
                 deliveryToStudents.setBackground(null);

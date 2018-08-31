@@ -48,6 +48,10 @@
             android:name=".Questions.QuestionPopUp"
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
+        <activity
+            android:name=".Questions.QuestionPopUpStudent"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

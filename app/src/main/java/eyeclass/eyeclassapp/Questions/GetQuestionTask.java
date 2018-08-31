@@ -2,6 +2,8 @@ package eyeclass.eyeclassapp.Questions;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -12,22 +14,20 @@ import java.net.URLEncoder;
 
 import Infra.Constants;
 
-public class DeliveryQuestionsTask extends AsyncTask<String, Void, Integer> {
+public class GetQuestionTask  extends AsyncTask<Void, Void, Integer> {
+
     @Override
-    protected Integer doInBackground(String... params) {
-        String questionData = params[0];
+    protected Integer doInBackground(Void... params) {
         String data = null;
         try {
-            data = URLEncoder.encode("questionData", "UTF-8")
-                    + "=" + URLEncoder.encode(questionData, "UTF-8");
-            data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
-            data += "&" + URLEncoder.encode("action", "UTF-8")
-                    + "=" + URLEncoder.encode("send", "UTF-8");
+            data = URLEncoder.encode("action", "UTF-8")
+                    + "=" + URLEncoder.encode("get", "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
-        String userPerm = "";
+        String line = null;
+        StringBuilder sb = new StringBuilder();
         // Send data
         try
         {
@@ -41,6 +41,15 @@ public class DeliveryQuestionsTask extends AsyncTask<String, Void, Integer> {
             wr.write( data );
             wr.flush();
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            // Read Server Response
+            while((line = reader.readLine()) != null)
+            {
+                // Append server response in string
+                sb.append(line);
+            }
+            System.out.println("************ sb is: " + sb);
+            if (!(sb.toString().equals("null")))
+                setQuestionData(sb.toString());
 
         }
         catch(Exception ex)
@@ -48,6 +57,17 @@ public class DeliveryQuestionsTask extends AsyncTask<String, Void, Integer> {
             System.out.println("on ex:" + ex.toString());
         }
 
-        return 1;
+        if (!(sb.toString().equals("null"))) return 1;
+        else return 0;
     }
+
+    public static String getQuestionData() {
+        return questionData;
+    }
+
+    private void setQuestionData(String questionData) {
+        this.questionData =  questionData;
+    }
+
+    private static String questionData;
 }
