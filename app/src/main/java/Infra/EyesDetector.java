@@ -33,7 +33,6 @@ public class EyesDetector {
         Mat template=null;
         source = Imgcodecs.imdecode(new MatOfByte(image), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
         CascadeClassifier classifier = new CascadeClassifier(m_classifierStoragePath);
-
         MatOfRect eyes = new MatOfRect();
         classifier.detectMultiScale(source, eyes);
         for (Rect rect : eyes.toArray()) {
@@ -41,12 +40,13 @@ public class EyesDetector {
                     new Scalar(200, 200, 100),2);
         }
         //set image to processed image
-        byte[] processedImage = new byte[(int) (source.total() *
-                source.channels())];
-        source.get(0, 0, processedImage);
-        image = processedImage;
+        MatOfByte dest = new MatOfByte();
+        Imgcodecs.imencode(".jpg", source, dest);
+        last_image = dest.toArray();
         return eyes.toArray().length;
     }
+
+    public byte[] getProcceedImage(){return last_image;}
 
     private String copyClassifier(AssetManager assets, File deviceStorage)
     {
@@ -75,11 +75,13 @@ public class EyesDetector {
         }
         catch(Exception e)
         {
+            System.out.println("error - 33333333");
             e.printStackTrace();
         }
         return classifier.getAbsolutePath();
     }
 
+    byte[] last_image;
     private String m_classifierStoragePath;
     private final String CASCADE_NAME = "Classifier.xml";
     private final String CLASSIFIERS_DIR = "Classifiers";

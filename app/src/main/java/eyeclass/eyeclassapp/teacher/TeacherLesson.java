@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
 import org.json.JSONArray;
@@ -66,13 +68,30 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             new StartLesson().execute().get();
             InputStream pdf = new pdf().execute().get();
             pdfView.fromStream(pdf).onPageChange(this).load();
-            new studentsStatus().execute();
+            new studentsStatus().execute(true);
             new QuestionsLesson().execute();
         }
         catch (Exception er) { er.printStackTrace();
         }
 
         buildQuestionsSelection();
+    }
+
+    @Override
+    public void onBackPressed() {
+        endLessonHandler();
+        return;
+    }
+
+    private void endLessonHandler()
+    {
+        try {
+            new endLesson().execute().get();
+        } catch (Exception e) {
+            System.out.println("Error in exit lesson");
+            e.printStackTrace();
+        }
+        finish();
     }
 
     private void buildQuestionsSelection()
@@ -206,6 +225,37 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         new sendTeacherPage().execute(page);
     }
 
+    class endLesson extends  AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=end_lesson";
+                data += "&class_id=" + Infra.Constants.Teacher.Demo_class_id;
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+            }
+            catch (Exception e){}
+            return null;
+        }
+    }
+
     class sendTeacherPage extends AsyncTask<Integer, Void, Void>
     {
         @Override
@@ -270,13 +320,16 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         }
     }
 
-    class studentsStatus extends AsyncTask<Void, Void, Void>
+    class studentsStatus extends AsyncTask<Boolean, Void, Void>
     {
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Boolean... booleans) {
             URL url = null;
+            boolean isFirstTime = booleans[0];
             try {
+                if (!isFirstTime)
+                    Thread.sleep(2000);
                 String data = "req=students_status";
                 data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
@@ -314,9 +367,13 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) {
+
             displayStudentsStatus();
+            if (!isFinishing())
+                new studentsStatus().execute(false);
         }
     }
 
