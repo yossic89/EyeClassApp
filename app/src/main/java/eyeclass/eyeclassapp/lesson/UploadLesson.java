@@ -10,18 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+
 import eyeclass.eyeclassapp.R;
 
-public class UploadLesson extends AppCompatActivity {
+public class UploadLesson extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     static final int READ_REQ = 24;
     byte[] lessonFile;
-    private EditText mClass;
-    private EditText mCurr;
+    private String mClass;
+    private String mCurr;
     private EditText mTitle;
 
         ViewGroup cont;
@@ -34,13 +40,43 @@ public class UploadLesson extends AppCompatActivity {
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-            mClass = (EditText) findViewById(R.id.class_lesson);
-            mCurr = (EditText) findViewById(R.id.curriculum_lesson);
-            mTitle = (EditText) findViewById(R.id.title_lesson);
+            ArrayList<String> cur;
+            cur=new ArrayList<String>();
+            cur.add("Bible");
+            cur.add("Math");
+            cur.add("Science");
+            cur.add("Logic");
+            Spinner curSpinner = findViewById(R.id.spinner_cur_add_lesson);
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, cur);
+            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            curSpinner.setAdapter(adapter1);
+            curSpinner.setOnItemSelectedListener(this);
 
+            ArrayList<String> classLesson;
+            classLesson=new ArrayList<String>();
+            classLesson.add("1");
+            classLesson.add("2");
+            classLesson.add("3");
+            classLesson.add("4");
+            Spinner classSpinner = findViewById(R.id.spinner_class_add_lesson);
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, classLesson);
+            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            classSpinner.setAdapter(adapter2);
+            classSpinner.setOnItemSelectedListener(this);
+
+            mTitle = (EditText) findViewById(R.id.title_lesson);
         }
 
-        public void readFile(View view) {
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        //TODO get values from spinners
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void readFile(View view) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("application/pdf");

@@ -90,20 +90,6 @@
         app:srcCompat="@drawable/add_lesson" />
 
     <EditText
-        android:id="@+id/curriculum_lesson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Curriculum"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toEndOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.159" />
-
-    <EditText
         android:id="@+id/title_lesson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,19 +103,29 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
         app:layout_constraintVertical_bias="0.555" />
 
-    <EditText
-        android:id="@+id/class_lesson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Class"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Spinner
+        android:id="@+id/spinner_cur_add_lesson"
+        android:layout_width="263dp"
+        android:layout_height="45dp"
+        android:hint="curriculum"
+        app:layout_constraintBottom_toTopOf="@+id/title_lesson"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintVertical_bias="0.354" />
+        app:layout_constraintVertical_bias="0.343" />
+
+    <Spinner
+        android:id="@+id/spinner_class_add_lesson"
+        android:layout_width="263dp"
+        android:layout_height="45dp"
+        android:hint="class"
+        app:layout_constraintBottom_toTopOf="@+id/title_lesson"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.779" />
 
 
 </android.support.constraint.ConstraintLayout>

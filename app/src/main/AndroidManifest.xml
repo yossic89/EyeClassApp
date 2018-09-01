@@ -51,6 +51,7 @@
 
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>
+        <activity android:name=".lesson.AddQuestions"></activity>
     </application>
 
 </manifest>
