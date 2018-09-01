@@ -152,7 +152,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
                 JSONObject jObj = new JSONObject(sb.toString());
                 sendMyImage = jObj.getBoolean("ifSendPhoto");
-                sendDeviationTimerMS = jObj.getInt("photoSampling") * 1000;
+                sendDeviationTimerMS = jObj.getInt("photoSampling");
 
 
 
