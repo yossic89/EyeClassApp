@@ -122,7 +122,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         }
         catch (Exception e)
         {
-            System.out.println("YOSSI - error in taking photo");
+            System.out.println("error in taking photo");
             e.printStackTrace();
             takePhoto(activity);
         }
