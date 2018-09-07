@@ -109,6 +109,12 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             System.out.println("error - bbbbbbb");
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         takePhoto(this);
 
     }
@@ -411,11 +417,14 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        if (isFinishing())
-                            cancel();
+
                         if(!isQuestionOn) {
                             try {
                                 int questionsRes = new GetQuestionTask().execute().get();
+                                if (isFinishing())
+                                {
+                                    cancel();
+                                }
                                 System.out.println("questionsRes " + questionsRes);
                                 if (questionsRes == 1) {
                                     Intent intent = new Intent(StudentLesson.this, QuestionPopUpStudent.class);

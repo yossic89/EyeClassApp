@@ -24,6 +24,12 @@ public class StudentSchedule extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_schedule);
+
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
         try {
             new WaitForLesson().execute();
             //startActivity(new Intent(StudentSchedule.this, StudentLesson.class));
