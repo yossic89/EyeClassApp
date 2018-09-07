@@ -133,6 +133,10 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 capturingListener.onCaptureDone(picturesTaken.lastEntry().getKey(), picturesTaken.lastEntry().getValue());
                 Log.i(TAG, "done taking picture from camera " + cameraDevice.getId());
             }
+            else
+            {
+                capturingListener.onCaptureDone(null, null);
+            }
             closeCamera();
         }
     };
@@ -253,7 +257,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
         openCamera();
     }
 
-    private void closeCamera() {
+    public void closeCamera() {
         Log.d(TAG, "closing camera " + cameraDevice.getId());
         if (null != cameraDevice && !cameraClosed) {
             cameraDevice.close();
