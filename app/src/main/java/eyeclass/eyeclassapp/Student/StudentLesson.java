@@ -63,13 +63,15 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_lesson);
-        new properties().execute();
+
         pdfView = (PDFView) findViewById(R.id.StudentPDFView);
         try {
+            new properties().execute().get();
             InputStream pdf = new pdf().execute().get();
 
             pdfView.fromStream(pdf).onPageChange(this).load();
         } catch (Exception e) {
+            System.out.println("error - aaaaaaaaa");
             e.printStackTrace();
         }
         //init eyes detector
@@ -87,13 +89,39 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
         pictureService = PictureCapturingServiceImpl.getInstance(this);
-        pictureService.startCapturing(this);
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            System.out.println("error - bbbbbbb");
+            e.printStackTrace();
+        }
+        takePhoto(this);
+
     }
 
 
+    private synchronized void takePhoto(PictureCapturingListener activity)
+    {
+        try
+        {
+            pictureService.startCapturing(activity);
+        }
+        catch (Exception e)
+        {
+            System.out.println("YOSSI - error in taking photo");
+            e.printStackTrace();
+            takePhoto(activity);
+        }
+    }
+
     @Override
     public void onPageChanged(int page, int pageCount) {
-        m_page = page;
+        synchronized (this)
+        {
+            m_page = page;
+        }
+
     }
 
     class properties extends AsyncTask<Void, Void, Void>
@@ -124,9 +152,12 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
                 JSONObject jObj = new JSONObject(sb.toString());
                 sendMyImage = jObj.getBoolean("ifSendPhoto");
-                sendDeviationTimerMS = jObj.getInt("photoSampling") * 1000;
+                sendDeviationTimerMS = jObj.getInt("photoSampling");
+
+
 
             } catch (Exception e) {
+                System.out.println("error - cccccccccc");
                 e.printStackTrace();
             }
             return null;
@@ -153,6 +184,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 return conn.getInputStream();
 
             } catch (Exception e) {
+                System.out.println("error - dddddddddd");
                 e.printStackTrace();
             }
 
@@ -200,8 +232,10 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=measure_data&";
-                deviationData[0].setPage_num(m_page);
-
+                synchronized (this)
+                {
+                    deviationData[0].setPage_num(m_page);
+                }
                 data += "data=" + new Gson().toJson(deviationData[0]);
                 url = new URL(Constants.Connections.StudentServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -222,6 +256,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 }
 
             } catch (Exception e) {
+                System.out.println("error - eeeeeeeeee");
                 e.printStackTrace();
             }
 
@@ -265,6 +300,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 status = Boolean.parseBoolean(sb.toString().trim());
             }
             catch (Exception e) {
+                System.out.println("error - fffffffffff");
                 e.printStackTrace();
             }
             return null;
@@ -272,8 +308,10 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
         @Override
         protected void onPostExecute(Void result){
-            if (!status)
-                pictureService.startCapturing(activity);
+            if (status)
+                finish();
+            else
+                takePhoto(activity);
         }
     }
 
@@ -284,11 +322,16 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     public void onCaptureDone(String pictureUrl, byte[] pictureData) {
         if (pictureData != null && pictureUrl != null) {
             //Send deviation data
-            int eyesCount = eyesDetector.getEyesFromImage(pictureData);
+            int eyesCount = -1;
+            synchronized (this)
+            {
+                eyesCount = eyesDetector.getEyesFromImage(pictureData);
+            }
             //send photo if needed, otherwise send null
             byte[] picture = null;
             if (sendMyImage)
-                picture = pictureData;
+                picture = eyesDetector.getProcceedImage();
+              //  picture = pictureData;
             DeviationData dd = new DeviationData(eyesCount, picture);
             new deviationReportSend().execute(dd);
         }
@@ -296,7 +339,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         {
             new checkIfLessonDone(this).execute();
         }
-        catch (Exception e){e.printStackTrace();}
+        catch (Exception e){
+            System.out.println("error - 111111111");e.printStackTrace();}
     }
 
 

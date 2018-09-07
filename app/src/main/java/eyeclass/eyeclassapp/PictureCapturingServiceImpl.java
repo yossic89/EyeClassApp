@@ -154,7 +154,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
             Log.d(TAG, "camera " + camera.getId() + " opened");
             cameraDevice = camera;
             Log.i(TAG, "Taking picture from camera " + camera.getId());
-            System.out.println("YOSSI Taking picture from camera " + camera.getId());
+            System.out.println("Taking picture from camera " + camera.getId());
             //Take the picture after some delay. It may resolve getting a black dark photos.
             new Handler().postDelayed(() -> {
                 try {
