@@ -411,6 +411,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
+                        if (isFinishing())
+                            cancel();
                         if(!isQuestionOn) {
                             try {
                                 int questionsRes = new GetQuestionTask().execute().get();
@@ -435,7 +437,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                         }
                     }});}
         };
-        timer.schedule(doAsynchronousTask, 0, 1000);
+        timer.schedule(doAsynchronousTask, 0, 3000);
 
     }
 

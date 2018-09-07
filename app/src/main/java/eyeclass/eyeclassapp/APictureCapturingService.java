@@ -47,4 +47,6 @@ public abstract class APictureCapturingService {
      * @param listener picture capturing listener
      */
     public abstract void startCapturing(final PictureCapturingListener listener);
+
+    public abstract void closeCamera();
 }
