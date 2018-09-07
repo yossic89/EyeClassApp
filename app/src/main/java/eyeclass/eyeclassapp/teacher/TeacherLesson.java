@@ -442,16 +442,6 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         protected Void doInBackground(Void... voids) {
             String s = getQuestionsFromServer();
             setQuestionsFromServer(s);
-
-          /*      JSONArray jsonArrayQuestions = null;
-
-                jsonArrayQuestions = new JSONArray(questionsFromServer);
-                for (int i = 0; i < jsonArrayQuestions.length(); i++) {
-
-                }
-            }catch (JSONException e) {
-                e.printStackTrace();
-            }*/
             return null;
         }
 

@@ -3,20 +3,23 @@ package eyeclass.eyeclassapp.Student;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeMap;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -33,13 +36,18 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
 import Infra.EyesDetector;
 import eyeclass.eyeclassapp.APictureCapturingService;
 import eyeclass.eyeclassapp.PictureCapturingListener;
 import eyeclass.eyeclassapp.PictureCapturingServiceImpl;
+import eyeclass.eyeclassapp.Questions.GetQuestionTask;
+import eyeclass.eyeclassapp.Questions.QuestionPopUp;
+import eyeclass.eyeclassapp.Questions.QuestionPopUpStudent;
 import eyeclass.eyeclassapp.R;
+import eyeclass.eyeclassapp.teacher.TeacherLesson;
 
 public class StudentLesson extends AppCompatActivity implements OnPageChangeListener, PictureCapturingListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -48,6 +56,9 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
     private boolean sendMyImage;
     private int sendDeviationTimerMS;
     EyesDetector eyesDetector = new EyesDetector();
+    boolean isQuestionOn = false;
+    long startTime;
+    long timeForQuestion;
 
     //camera
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_CODE = 1;
@@ -85,6 +96,8 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                 | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
+        checkForQuestions();
+
         //camera
         checkPermissions();
         uploadBackPhoto = (ImageView) findViewById(R.id.backIV);
@@ -387,4 +400,45 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         int eyes_count;
 
     }
+
+
+
+    public void checkForQuestions() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        if(!isQuestionOn) {
+                            try {
+                                int questionsRes = new GetQuestionTask().execute().get();
+                                System.out.println("questionsRes " + questionsRes);
+                                if (questionsRes == 1) {
+                                    Intent intent = new Intent(StudentLesson.this, QuestionPopUpStudent.class);
+                                    intent.putExtra("questionData", GetQuestionTask.getQuestionData());
+                                    startActivityForResult(intent,100);
+                                    isQuestionOn = true;
+                                    startTime = System.currentTimeMillis();
+                                    timeForQuestion = 31000;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            long different = System.currentTimeMillis() - startTime;
+                            if (different >= timeForQuestion) {
+                                finishActivity(100);
+                                isQuestionOn = false;
+                            }
+                        }
+                    }});}
+        };
+        timer.schedule(doAsynchronousTask, 0, 1000);
+
+    }
+
+
 }
+
