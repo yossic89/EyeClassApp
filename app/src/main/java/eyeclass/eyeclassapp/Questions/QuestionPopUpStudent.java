@@ -126,12 +126,14 @@ public class QuestionPopUpStudent extends Activity {
         RadioButton r = (RadioButton)  radioButtonGroup.getChildAt(idx);
         String selectedtext = r.getText().toString().substring(1);
         if (questionData.getRightAns().equals(selectedtext)) {
+            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"true",selectedtext);
             Intent intent = new Intent(QuestionPopUpStudent.this, GoodAnswer.class);
             startActivityForResult(intent,ANSWER_POP_UP);
             isAnswerPopUpDisplay = true;
             timeOfAnswerPopUp = 4;
         }
         else{
+            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"false",selectedtext);
             Intent intent = new Intent(QuestionPopUpStudent.this, WrongAnswer.class);
             startActivityForResult(intent,ANSWER_POP_UP);
             isAnswerPopUpDisplay = true;
