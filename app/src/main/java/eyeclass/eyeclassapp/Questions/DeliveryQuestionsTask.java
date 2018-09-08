@@ -16,11 +16,12 @@ public class DeliveryQuestionsTask extends AsyncTask<String, Void, Integer> {
     @Override
     protected Integer doInBackground(String... params) {
         String questionData = params[0];
+        String class_id = params[1];
         String data = null;
         try {
             data = URLEncoder.encode("questionData", "UTF-8")
                     + "=" + URLEncoder.encode(questionData, "UTF-8");
-            data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+            data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
             if (questionData.equals("clear")) {
                 data += "&" + URLEncoder.encode("action", "UTF-8")
                         + "=" + URLEncoder.encode("clear", "UTF-8");

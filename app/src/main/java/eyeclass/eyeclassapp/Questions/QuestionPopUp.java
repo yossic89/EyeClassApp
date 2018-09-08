@@ -26,17 +26,20 @@ public class QuestionPopUp extends Activity {
     public String questions = "";
     private Gson gson = new Gson();
     private int time=31;
+    private String class_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        class_id = getIntent().getExtras().getString("class_id");;
         setContentView(R.layout.activity_question_pop_up);
         displayQuestions();
         Button deliveryToStudents = (Button) findViewById(R.id.deliver_to_stud_btn);
         deliveryToStudents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DeliveryQuestionsTask().execute(questions);
+                new DeliveryQuestionsTask().execute(questions, class_id);
                 TextView deliveryToStudentsTxt = (TextView) findViewById(R.id.delivery_que_text);
                 deliveryToStudentsTxt.setText("Question delivered\nto students");
                 deliveryToStudentsTxt.setTextColor(Color.parseColor("#870274"));
@@ -104,7 +107,7 @@ public class QuestionPopUp extends Activity {
             }
 
             public void onFinish() {
-                new DeliveryQuestionsTask().execute("clear");
+                new DeliveryQuestionsTask().execute("clear", class_id);
                 textTimer.setText("DONE");
             }
 
