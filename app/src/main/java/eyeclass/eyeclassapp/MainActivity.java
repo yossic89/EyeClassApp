@@ -1,8 +1,8 @@
 package eyeclass.eyeclassapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,10 +15,8 @@ import java.net.CookieManager;
 import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
-import eyeclass.eyeclassapp.Student.StudentLesson;
 import eyeclass.eyeclassapp.Student.StudentSchedule;
-import eyeclass.eyeclassapp.teacher.LessonSelect;
-import eyeclass.eyeclassapp.teacher.TeacherLesson;
+import eyeclass.eyeclassapp.teacher.TeacherMenu;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -93,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                     mPasswordView.setError("Wrong credentials");
                     break;
                 case Infra.Constants.Permissions.Teacher:
-                  startActivity(new Intent(this, LessonSelect.class));
+                  //startActivity(new Intent(this, LessonSelect.class));
+                    startActivity(new Intent(this, TeacherMenu.class));
                     break;
                 case Constants.Permissions.Student:
                     startActivity(new Intent(this, StudentSchedule.class));

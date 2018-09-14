@@ -1,7 +1,5 @@
 package eyeclass.eyeclassapp.lesson;
 
-import android.widget.EditText;
-
 import java.util.List;
 
 import eyeclass.eyeclassapp.Questions.QuestionData;
@@ -10,7 +8,7 @@ public class LessonData {
     private byte[] lessonFile;
     private String mClass;
     private String mCurr;
-    private EditText mTitle;
+    private String mTitle;
     private List<QuestionData> questions;
 
     public byte[] getLessonFile() {
@@ -37,11 +35,11 @@ public class LessonData {
         this.mCurr = mCurr;
     }
 
-    public EditText getmTitle() {
+    public String getmTitle() {
         return mTitle;
     }
 
-    public void setmTitle(EditText mTitle) {
+    public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 

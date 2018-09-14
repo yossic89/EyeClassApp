@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!--Teacher-->
+        <activity android:name=".teacher.TeacherMenu"></activity>
         <activity android:name=".teacher.TeacherLesson"></activity>
         <activity android:name=".teacher.LessonSelect"></activity>
         <activity

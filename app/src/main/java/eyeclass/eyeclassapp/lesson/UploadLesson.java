@@ -3,6 +3,7 @@ package eyeclass.eyeclassapp.lesson;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -17,17 +18,30 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import eyeclass.eyeclassapp.Questions.QuestionData;
 import eyeclass.eyeclassapp.R;
 
-public class UploadLesson extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class UploadLesson extends AppCompatActivity  {
     static final int READ_REQ = 24;
     private static LessonData mLesson;
+    private HashMap<String, String> class_to_id = new HashMap<>();
+    private List<String> currList;
+    Spinner curriculums;
+    Spinner classes;
 
         ViewGroup cont;
         ListView contactLst;
@@ -38,47 +52,58 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
             setContentView(R.layout.activity_add_lesson);
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            try {
+                new classesData().execute().get();
+                new curriculumData().execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
             mLesson=new LessonData();
-            //TODO get from DB
-            ArrayList<String> cur;
-            cur=new ArrayList<String>();
-            cur.add("Bible");
-            cur.add("Math");
-            cur.add("Science");
-            cur.add("Logic");
+            curriculums = findViewById(R.id.spinner_cur_add_lesson);
+            classes = findViewById(R.id.spinner_class_add_lesson);
+            classes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String classStr = parent.getItemAtPosition(position).toString();
+                    mLesson.setmClass(class_to_id.get(classStr));
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            curriculums.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mLesson.setmCurr(parent.getItemAtPosition(position).toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+
             Spinner curSpinner = findViewById(R.id.spinner_cur_add_lesson);
-            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, cur);
+            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, currList);
             adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             curSpinner.setAdapter(adapter1);
-            curSpinner.setOnItemSelectedListener(this);
-            //TODO get from DB
-            ArrayList<String> classLesson;
-            classLesson=new ArrayList<String>();
-            classLesson.add("1");
-            classLesson.add("2");
-            classLesson.add("3");
-            classLesson.add("4");
+
+            List<String> data =  new ArrayList<>();
+            for (Object obj : class_to_id.keySet())
+                data.add(obj.toString());
             Spinner classSpinner = findViewById(R.id.spinner_class_add_lesson);
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, classLesson);
+            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, data);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             classSpinner.setAdapter(adapter2);
-            classSpinner.setOnItemSelectedListener(this);
 
-            mLesson.setmTitle(findViewById(R.id.title_lesson));
+            mLesson.setmTitle(findViewById(R.id.title_lesson).toString());
         }
-
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        //TODO get values from spinners
-        //get curr
-        //mLesson.setmCurr();
-        //get class
-        //mLesson.setmClass();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     public void readFile(View view) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -88,11 +113,26 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
         }
 
     public void submit(View view) {
-            if(mLesson.getLessonFile() == null)
-                Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
-            else{
-                //TODO send to server
-            }
+        System.out.println("YAMIT 111111");
+            //if(mLesson.getLessonFile() == null)
+             //   Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
+            //else{
+                try {
+                    System.out.println("YAMIT 22222");
+
+                    new submitLesson().execute().get();
+                    System.out.println("YAMIT 33333");
+
+                } catch (Exception e) {
+                    System.out.println("YAMIT 44444");
+
+                    e.printStackTrace();
+                }
+                //TODO wait for server response
+                //loader
+                Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();
+                finish();
+           // }
 
     }
 
@@ -147,13 +187,13 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
         }
 
         public static class AddQuestions extends AppCompatActivity {
-            private EditText mTopic;
-            private EditText mTime;
-            private EditText mQuestion;
-            private EditText mCorrectAnswer;
-            private EditText mWrongAnswer1;
-            private EditText mWrongAnswer2;
-            private EditText mWrongAnswer3;
+            private String mTopic;
+            private String mTime;
+            private String mQuestion;
+            private String mCorrectAnswer;
+            private String mWrongAnswer1;
+            private String mWrongAnswer2;
+            private String mWrongAnswer3;
             private List<QuestionData> questions;
 
             @Override
@@ -163,13 +203,13 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
 
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 questions = new ArrayList<QuestionData>();
-                mTopic = (EditText) findViewById(R.id.topic_quest);
-                mTime = (EditText) findViewById(R.id.time_quest);
-                mQuestion = (EditText) findViewById(R.id.question_quest);
-                mCorrectAnswer = (EditText) findViewById(R.id.correct_ans_quest);
-                mWrongAnswer1 = (EditText) findViewById(R.id.wrong_ans_1_quest);
-                mWrongAnswer2 = (EditText) findViewById(R.id.wrong_ans_2_quest);
-                mWrongAnswer3 = (EditText) findViewById(R.id.wrong_ans_3_quest);
+                mTopic = findViewById(R.id.topic_quest).toString();
+                mTime = findViewById(R.id.time_quest).toString();
+                mQuestion = findViewById(R.id.question_quest).toString();
+                mCorrectAnswer = findViewById(R.id.correct_ans_quest).toString();
+                mWrongAnswer1 = findViewById(R.id.wrong_ans_1_quest).toString();
+                mWrongAnswer2 = findViewById(R.id.wrong_ans_2_quest).toString();
+                mWrongAnswer3 = findViewById(R.id.wrong_ans_3_quest).toString();
             }
 
             public void submitQuestion(View view) {
@@ -182,26 +222,123 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
             public void addQuestionToList(View view) {
 
                 QuestionData newQuestion = new QuestionData();
-                newQuestion.setQuestion(mQuestion.toString());
-                newQuestion.setRightAns(mCorrectAnswer.toString());
+                newQuestion.setQuestion(mQuestion);
+                newQuestion.setRightAns(mCorrectAnswer);
                 List<String> allOptions = new ArrayList<String>();
-                allOptions.add(mWrongAnswer1.toString());
-                allOptions.add(mWrongAnswer2.toString());
-                allOptions.add(mWrongAnswer3.toString());
+                allOptions.add(mWrongAnswer1);
+                allOptions.add(mWrongAnswer2);
+                allOptions.add(mWrongAnswer3);
                 newQuestion.setAllOptions(allOptions);
-                newQuestion.setTopic(mTopic.toString());
-                newQuestion.setTime(mTime.toString());
+                newQuestion.setTopic(mTopic);
+                newQuestion.setTime(mTime);
                 questions.add(newQuestion);
                 Toast.makeText(AddQuestions.this, "The question has been saved successfully", Toast.LENGTH_LONG).show();
                 //delete screen content
-                mTopic.setText("");
-                mTime.setText("");
-                mQuestion.setText("");
-                mCorrectAnswer.setText("");
-                mWrongAnswer1.setText("");
-                mWrongAnswer2.setText("");
-                mWrongAnswer3.setText("");
+                ((EditText)findViewById(R.id.topic_quest)).setText("");
+                ((EditText)findViewById(R.id.time_quest)).setText("");
+                ((EditText)findViewById(R.id.question_quest)).setText("");
+                ((EditText)findViewById(R.id.correct_ans_quest)).setText("");
+                ((EditText)findViewById(R.id.wrong_ans_1_quest)).setText("");
+                ((EditText)findViewById(R.id.wrong_ans_2_quest)).setText("");
+                ((EditText)findViewById(R.id.wrong_ans_3_quest)).setText("");
 
             }
         }
+    class classesData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=classes";
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+
+                class_to_id = new Gson().fromJson(sb.toString(),new TypeToken<HashMap<String, String>>(){}.getType());
+
+            }
+            catch (Exception e){}
+            return null;
+        }
+    }
+    class curriculumData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=curriculum";
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+
+                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
+
+            }
+            catch (Exception e){}
+            return null;
+        }
+    }
+    class submitLesson extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=upload_lesson";
+                data+="&data=" + new Gson().toJson(mLesson);
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+
+                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
+
+            }
+            catch (Exception e){}
+            return null;
+        }
+    }
 }
