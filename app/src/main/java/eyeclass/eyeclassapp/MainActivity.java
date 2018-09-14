@@ -92,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
                     mPasswordView.setError("Wrong credentials");
                     break;
                 case Infra.Constants.Permissions.Teacher:
-                    startActivity(new Intent(this, TeacherLesson.class));
+                    Intent teacher = new Intent(this, TeacherLesson.class);
+                    teacher.putExtra("class_id", Constants.Teacher.Demo_class_id);
+                    teacher.putExtra("lesson_id", (long)5);
+                    startActivity(teacher);
                     break;
                 case Constants.Permissions.Student:
                     startActivity(new Intent(this, StudentSchedule.class));

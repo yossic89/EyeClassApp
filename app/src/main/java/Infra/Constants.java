@@ -22,9 +22,7 @@ public class Constants {
     }
 
     public static class Teacher{
-        public static int Demo_lesson_id = 1;
         public static String Demo_class_id = "ORT Eilat_Grade11_1";
-        public static int SendTeacherPageMS = 500;
         public static final String Class_id = "class_id";
     }
 

@@ -55,12 +55,15 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
 
     PDFView pdfView;
     private String questionsFromServer = null;
-
+    private String class_id;
+    private long lesson_id;
     private List<StudentActiveItem> studList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        class_id = getIntent().getExtras().getString("class_id");
+        lesson_id =getIntent().getExtras().getLong("lesson_id");
         studList = new ArrayList<StudentActiveItem>();
         setContentView(R.layout.activity_teacher_lesson);
         pdfView = (PDFView) findViewById(R.id.TeacherPDFView);
@@ -124,6 +127,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
                             int index = Integer.valueOf(v.getTag().toString());
                             JSONObject jsonObject = new JSONObject(jsonArrayQuestions.get(index).toString());
                             intent.putExtra("questionData", jsonObject.toString());
+                            intent.putExtra("class_id", class_id);
                             startActivity(intent);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -232,7 +236,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=end_lesson";
-                data += "&class_id=" + Infra.Constants.Teacher.Demo_class_id;
+                data += "&class_id=" + class_id;
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
@@ -263,7 +267,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=teacher_page";
-                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
                 data += "&page=" + integers[0];
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -331,7 +335,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
                 if (!isFirstTime)
                     Thread.sleep(2000);
                 String data = "req=students_status";
-                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
@@ -384,7 +388,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
             URL url = null;
             try {
                 String data = "req=display_pdf";
-                data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" +class_id;
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
@@ -408,7 +412,8 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         protected Void doInBackground(Void... voids) {
             URL url = null;
             try {
-                String data = "req=demo_lesson";
+                String data = "req=start_lesson";
+                data += "&class_id=" + class_id + "&lesson_id=" + lesson_id;
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection)url.openConnection();
                 conn.setDoOutput(true);
@@ -455,7 +460,7 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         StringBuilder sb = new StringBuilder();
         try {
             String data = "req=questions_lesson";
-            data += "&" + Infra.Constants.Teacher.Class_id + "=" + Infra.Constants.Teacher.Demo_class_id;
+            data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
             url = new URL(Infra.Constants.Connections.TeacherServlet());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
