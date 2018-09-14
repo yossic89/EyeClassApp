@@ -8,6 +8,7 @@ public class QuestionData {
     private String rightAns;
     private List<String> allOptions;
     private String topic;
+    private String time;
 
     public String getId() {
         return id;
@@ -48,4 +49,14 @@ public class QuestionData {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+
 }

@@ -52,7 +52,7 @@
 
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>
-        <activity android:name=".lesson.AddQuestions"></activity>
+        <activity android:name=".lesson.UploadLesson$AddQuestions"></activity>
 
         <activity
             android:name=".Questions.QuestionPopUpStudent"
