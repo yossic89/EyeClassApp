@@ -73,10 +73,10 @@
 
     <LinearLayout
         android:layout_width="536dp"
-        android:layout_height="486dp"
+        android:layout_height="384dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="102dp"
         android:layout_marginTop="175dp"
         android:orientation="vertical">
 
@@ -117,16 +117,52 @@
             android:textSize="24sp" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="135dp"
-        android:layout_height="136dp"
+    <Button
+        android:id="@+id/deliver_to_stud_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="51dp"
+        android:layout_marginEnd="127dp"
+        android:background="@drawable/send" />
+
+    <TextView
+        android:id="@+id/delivery_que_text"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/deliver_to_stud_btn"
+        android:layout_marginEnd="67dp"
+        android:layout_marginTop="-47dp"
+        android:text="Deliver to students"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/que_pop_teacher_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="28dp"
-        android:layout_marginStart="335dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/deliver" />
+        android:layout_marginBottom="41dp"
+        android:layout_marginStart="73dp"
+        android:textColor="?android:attr/colorSecondary"
+        android:textSize="55sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/que_pop_teacher_timer"
+        android:layout_width="351dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/que_pop_teacher_t"
+        android:layout_marginStart="226dp"
+        android:textColor="@android:color/background_dark"
+        android:textSize="55sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

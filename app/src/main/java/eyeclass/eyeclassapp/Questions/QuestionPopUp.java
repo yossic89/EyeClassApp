@@ -1,26 +1,62 @@
 package eyeclass.eyeclassapp.Questions;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
+import java.util.concurrent.ExecutionException;
+
+import eyeclass.eyeclassapp.ConnectionTask;
 import eyeclass.eyeclassapp.R;
 
 public class QuestionPopUp extends Activity {
     public int index;
-    public JSONArray questions = new JSONArray();
+    public String questions = "";
     private Gson gson = new Gson();
+    private int time=31;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_pop_up);
+        displayQuestions();
+        Button deliveryToStudents = (Button) findViewById(R.id.deliver_to_stud_btn);
+        deliveryToStudents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DeliveryQuestionsTask().execute(questions);
+                TextView deliveryToStudentsTxt = (TextView) findViewById(R.id.delivery_que_text);
+                deliveryToStudentsTxt.setText("Question delivered\nto students");
+                deliveryToStudentsTxt.setTextColor(Color.parseColor("#870274"));
+                deliveryToStudents.setBackground(null);
+                displayTime();
+            }});
+
+    }
+
+    private void setSizeOfPopUp(){
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        getWindow().setLayout((int)(width*.8),(int)(height*.6));
+    }
+
+    private void displayQuestions(){
         String passedArg = getIntent().getExtras().getString("questionData");
+        questions = passedArg;
         QuestionData questionData = gson.fromJson(passedArg,QuestionData.class);
         setSizeOfPopUp();
         TextView question =(TextView)findViewById(R.id.que_pop_question);
@@ -53,18 +89,30 @@ public class QuestionPopUp extends Activity {
             }
             option.setText(option.getText() + questionData.getAllOptions().get(i));
         }
-
     }
 
-    private void setSizeOfPopUp(){
+    private void displayTime(){
+        TextView t = (TextView)findViewById(R.id.que_pop_teacher_t);
+        t.setText("Time:");
+        TextView textTimer = (TextView)findViewById(R.id.que_pop_teacher_timer);
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*.8),(int)(height*.6));
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                textTimer.setText("0:"+checkDigit(time));
+                time--;
+            }
+
+            public void onFinish() {
+                new DeliveryQuestionsTask().execute("clear");
+                textTimer.setText("DONE");
+            }
+
+        }.start();
+
     }
-
-
+    public String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
+    }
 
 }

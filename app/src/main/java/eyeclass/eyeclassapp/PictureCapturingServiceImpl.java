@@ -133,6 +133,10 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 capturingListener.onCaptureDone(picturesTaken.lastEntry().getKey(), picturesTaken.lastEntry().getValue());
                 Log.i(TAG, "done taking picture from camera " + cameraDevice.getId());
             }
+            else
+            {
+                capturingListener.onCaptureDone(null, null);
+            }
             closeCamera();
         }
     };
@@ -154,7 +158,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
             Log.d(TAG, "camera " + camera.getId() + " opened");
             cameraDevice = camera;
             Log.i(TAG, "Taking picture from camera " + camera.getId());
-            System.out.println("YOSSI Taking picture from camera " + camera.getId());
+            System.out.println("Taking picture from camera " + camera.getId());
             //Take the picture after some delay. It may resolve getting a black dark photos.
             new Handler().postDelayed(() -> {
                 try {
@@ -253,7 +257,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
         openCamera();
     }
 
-    private void closeCamera() {
+    public void closeCamera() {
         Log.d(TAG, "closing camera " + cameraDevice.getId());
         if (null != cameraDevice && !cameraClosed) {
             cameraDevice.close();

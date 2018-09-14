@@ -49,9 +49,26 @@
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
 
+
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>
         <activity android:name=".lesson.AddQuestions"></activity>
+
+        <activity
+            android:name=".Questions.QuestionPopUpStudent"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".Questions.GoodAnswer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".Questions.WrongAnswer"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>
