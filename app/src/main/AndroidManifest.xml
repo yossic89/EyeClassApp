@@ -43,6 +43,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!--Teacher-->
+        <activity android:name=".teacher.TeacherMenu"></activity>
         <activity android:name=".teacher.TeacherLesson"></activity>
         <activity android:name=".teacher.LessonSelect"></activity>
         <activity
@@ -53,7 +54,7 @@
 
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>
-        <activity android:name=".lesson.AddQuestions"></activity>
+        <activity android:name=".lesson.UploadLesson$AddQuestions"></activity>
 
         <activity
             android:name=".Questions.QuestionPopUpStudent"
