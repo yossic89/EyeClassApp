@@ -102,7 +102,6 @@ public class UploadLesson extends AppCompatActivity  {
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             classSpinner.setAdapter(adapter2);
 
-            mLesson.setmTitle(findViewById(R.id.title_lesson).toString());
         }
 
     public void readFile(View view) {
@@ -113,6 +112,7 @@ public class UploadLesson extends AppCompatActivity  {
         }
 
     public void submit(View view) {
+        mLesson.setmTitle(((EditText)findViewById(R.id.title_lesson)).getText().toString());
         System.out.println("YAMIT 111111");
             //if(mLesson.getLessonFile() == null)
              //   Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
@@ -203,13 +203,18 @@ public class UploadLesson extends AppCompatActivity  {
 
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 questions = new ArrayList<QuestionData>();
-                mTopic = findViewById(R.id.topic_quest).toString();
-                mTime = findViewById(R.id.time_quest).toString();
-                mQuestion = findViewById(R.id.question_quest).toString();
-                mCorrectAnswer = findViewById(R.id.correct_ans_quest).toString();
-                mWrongAnswer1 = findViewById(R.id.wrong_ans_1_quest).toString();
-                mWrongAnswer2 = findViewById(R.id.wrong_ans_2_quest).toString();
-                mWrongAnswer3 = findViewById(R.id.wrong_ans_3_quest).toString();
+
+            }
+
+            private void readFromScreen()
+            {
+                mTopic = ((EditText)findViewById(R.id.topic_quest)).getText().toString();
+                mTime = ((EditText)findViewById(R.id.time_quest)).getText().toString();
+                mQuestion = ((EditText)findViewById(R.id.question_quest)).getText().toString();
+                mCorrectAnswer = ((EditText)findViewById(R.id.correct_ans_quest)).getText().toString();
+                mWrongAnswer1 = ((EditText)findViewById(R.id.wrong_ans_1_quest)).getText().toString();
+                mWrongAnswer2 = ((EditText)findViewById(R.id.wrong_ans_2_quest)).getText().toString();
+                mWrongAnswer3 = ((EditText)findViewById(R.id.wrong_ans_3_quest)).getText().toString();
             }
 
             public void submitQuestion(View view) {
@@ -220,7 +225,7 @@ public class UploadLesson extends AppCompatActivity  {
             }
 
             public void addQuestionToList(View view) {
-
+                readFromScreen();
                 QuestionData newQuestion = new QuestionData();
                 newQuestion.setQuestion(mQuestion);
                 newQuestion.setRightAns(mCorrectAnswer);
@@ -287,6 +292,9 @@ public class UploadLesson extends AppCompatActivity  {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
+                conn.setUseCaches(false);
                 conn.connect();
                 java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
