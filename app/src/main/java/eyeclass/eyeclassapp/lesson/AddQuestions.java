@@ -2,6 +2,7 @@ package eyeclass.eyeclassapp.lesson;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,14 +39,14 @@ public class AddQuestions extends AppCompatActivity {
         mWrongAnswer3 = (EditText) findViewById(R.id.wrong_ans_3_quest);
     }
 
-    public void submitQuestion(){
+    public void submitQuestion(View view){
         //TODO
     }
 
-    public void addQuestionToList(){
+    public void addQuestionToList(View view){
 
         QuestionData newQuestion=new QuestionData();
-        //TODO
+        //TODO what id?
         newQuestion.setId("?");
         newQuestion.setQuestion(mQuestion.toString());
         newQuestion.setRightAns(mCorrectAnswer.toString());

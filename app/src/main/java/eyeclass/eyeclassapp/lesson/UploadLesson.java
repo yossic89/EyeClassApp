@@ -39,7 +39,7 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
             setContentView(R.layout.activity_add_lesson);
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
+            //TODO get from DB
             ArrayList<String> cur;
             cur=new ArrayList<String>();
             cur.add("Bible");
@@ -51,7 +51,7 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
             adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             curSpinner.setAdapter(adapter1);
             curSpinner.setOnItemSelectedListener(this);
-
+            //TODO get from DB
             ArrayList<String> classLesson;
             classLesson=new ArrayList<String>();
             classLesson.add("1");
@@ -84,7 +84,7 @@ public class UploadLesson extends AppCompatActivity implements AdapterView.OnIte
         }
 
     public void submit(View view) {
-        //TODO
+        //TODO send to server
     }
 
     public void addQuestions(View view) {
