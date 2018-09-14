@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import Infra.Constants;
 import eyeclass.eyeclassapp.Student.StudentLesson;
 import eyeclass.eyeclassapp.Student.StudentSchedule;
+import eyeclass.eyeclassapp.teacher.LessonSelect;
 import eyeclass.eyeclassapp.teacher.TeacherLesson;
 
 public class MainActivity extends AppCompatActivity {
@@ -92,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     mPasswordView.setError("Wrong credentials");
                     break;
                 case Infra.Constants.Permissions.Teacher:
-                    Intent teacher = new Intent(this, TeacherLesson.class);
-                    teacher.putExtra("class_id", Constants.Teacher.Demo_class_id);
-                    teacher.putExtra("lesson_id", (long)5);
-                    startActivity(teacher);
+                  startActivity(new Intent(this, LessonSelect.class));
                     break;
                 case Constants.Permissions.Student:
                     startActivity(new Intent(this, StudentSchedule.class));

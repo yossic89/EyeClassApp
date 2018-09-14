@@ -44,6 +44,7 @@
 
         <!--Teacher-->
         <activity android:name=".teacher.TeacherLesson"></activity>
+        <activity android:name=".teacher.LessonSelect"></activity>
         <activity
             android:name=".Questions.QuestionPopUp"
             android:theme="@style/AppTheme.CustomTheme">
