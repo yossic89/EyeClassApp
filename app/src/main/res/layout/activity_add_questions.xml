@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_questions"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/appicon" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="184dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="649dp" />
+
+
+    <Button
+        android:id="@+id/submit_quest"
+        android:layout_width="137dp"
+        android:layout_height="51dp"
+        android:onClick="submitQuestion"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toEndOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.85"></Button>
+
+    <ImageView
+        android:id="@+id/add_quest_title"
+        android:layout_width="221dp"
+        android:layout_height="53dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/add_quastions" />
+
+    <EditText
+        android:id="@+id/question_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Question"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.284" />
+
+    <EditText
+        android:id="@+id/correct_ans_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Correct Answer"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.418" />
+
+    <EditText
+        android:id="@+id/wrong_ans_3_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Wrong Answer 3"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.84" />
+
+    <EditText
+        android:id="@+id/wrong_ans_2_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Wrong Answer 2"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.692" />
+
+    <EditText
+        android:id="@+id/wrong_ans_1_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Wrong Answer 1"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.553" />
+
+    <EditText
+        android:id="@+id/time_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Time"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.148" />
+
+    <EditText
+        android:id="@+id/topic_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Topic"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <Button
+        android:id="@+id/add_quest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addQuestionToList"
+        android:text="Add Question"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.962" />
+
+
+</android.support.constraint.ConstraintLayout>
