@@ -19,6 +19,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -76,8 +77,23 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         }
         catch (Exception er) { er.printStackTrace();
         }
-
+        initTrackerSwitch();
         buildQuestionsSelection();
+    }
+
+    private void initTrackerSwitch()
+    {
+        Switch s = (Switch)findViewById(R.id.tracker_switch);
+        s.setChecked(true);
+        s.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                boolean isChecked = ((Switch) v).isChecked();
+                new Tracker().execute(isChecked);
+            }
+        });
     }
 
     @Override
@@ -437,6 +453,41 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
                 e.printStackTrace();
             }
 
+            return null;
+        }
+    }
+
+    class Tracker extends AsyncTask<Boolean, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Boolean... booleans) {
+            boolean track = booleans[0];
+            URL url = null;
+            StringBuilder sb = new StringBuilder();
+            try {
+                String data = "req=tracker";
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
+                data += "&track=" + track;
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
