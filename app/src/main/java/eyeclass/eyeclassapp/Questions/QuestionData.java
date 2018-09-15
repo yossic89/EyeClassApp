@@ -8,7 +8,7 @@ public class QuestionData {
     private String rightAns;
     private List<String> allOptions;
     private String topic;
-    private String time;
+    private int time;
 
     public String getId() {
         return id;
@@ -50,11 +50,11 @@ public class QuestionData {
         this.topic = topic;
     }
 
-    public String getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(int time) {
         this.time = time;
     }
 

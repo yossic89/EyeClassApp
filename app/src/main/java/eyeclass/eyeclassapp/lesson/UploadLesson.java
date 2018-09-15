@@ -38,10 +38,8 @@ import eyeclass.eyeclassapp.R;
 public class UploadLesson extends AppCompatActivity  {
     static final int READ_REQ = 24;
     private static LessonData mLesson;
-    private HashMap<String, String> class_to_id = new HashMap<>();
     private List<String> currList;
     Spinner curriculums;
-    Spinner classes;
 
         ViewGroup cont;
         ListView contactLst;
@@ -53,7 +51,6 @@ public class UploadLesson extends AppCompatActivity  {
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             try {
-                new classesData().execute().get();
                 new curriculumData().execute().get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -63,19 +60,7 @@ public class UploadLesson extends AppCompatActivity  {
 
             mLesson=new LessonData();
             curriculums = findViewById(R.id.spinner_cur_add_lesson);
-            classes = findViewById(R.id.spinner_class_add_lesson);
-            classes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String classStr = parent.getItemAtPosition(position).toString();
-                    mLesson.setmClass(class_to_id.get(classStr));
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
             curriculums.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -94,14 +79,6 @@ public class UploadLesson extends AppCompatActivity  {
             adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             curSpinner.setAdapter(adapter1);
 
-            List<String> data =  new ArrayList<>();
-            for (Object obj : class_to_id.keySet())
-                data.add(obj.toString());
-            Spinner classSpinner = findViewById(R.id.spinner_class_add_lesson);
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, data);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            classSpinner.setAdapter(adapter2);
-
         }
 
     public void readFile(View view) {
@@ -113,26 +90,29 @@ public class UploadLesson extends AppCompatActivity  {
 
     public void submit(View view) {
         mLesson.setmTitle(((EditText)findViewById(R.id.title_lesson)).getText().toString());
-        System.out.println("YAMIT 111111");
-            //if(mLesson.getLessonFile() == null)
-             //   Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
-            //else{
+            if(mLesson.getLessonFile() == null)
+                Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
+            else if (mLesson.getmTitle() == null || mLesson.getmTitle().isEmpty())
+                Toast.makeText(UploadLesson.this, "Please fill lesson Title", Toast.LENGTH_LONG).show();
+            else{
+                boolean isUpload = false;
                 try {
-                    System.out.println("YAMIT 22222");
-
-                    new submitLesson().execute().get();
-                    System.out.println("YAMIT 33333");
-
+                    isUpload = new submitLesson().execute().get();
                 } catch (Exception e) {
-                    System.out.println("YAMIT 44444");
-
                     e.printStackTrace();
                 }
-                //TODO wait for server response
-                //loader
-                Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();
-                finish();
-           // }
+                //TODO LOADER
+
+                if(isUpload)
+                {
+                    Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                else
+                    Toast.makeText(UploadLesson.this, "Failed to load lesson to server", Toast.LENGTH_LONG).show();
+
+
+            }
 
     }
 
@@ -235,7 +215,7 @@ public class UploadLesson extends AppCompatActivity  {
                 allOptions.add(mWrongAnswer3);
                 newQuestion.setAllOptions(allOptions);
                 newQuestion.setTopic(mTopic);
-                newQuestion.setTime(mTime);
+                newQuestion.setTime(Integer.parseInt(mTime));
                 questions.add(newQuestion);
                 Toast.makeText(AddQuestions.this, "The question has been saved successfully", Toast.LENGTH_LONG).show();
                 //delete screen content
@@ -249,13 +229,15 @@ public class UploadLesson extends AppCompatActivity  {
 
             }
         }
-    class classesData extends AsyncTask<Void, Void, Void>
+
+
+    class curriculumData extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected Void doInBackground(Void... voids) {
             URL url = null;
             try {
-                String data = "req=classes";
+                String data = "req=curriculum";
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
@@ -274,20 +256,21 @@ public class UploadLesson extends AppCompatActivity  {
                     sb.append(line);
                 }
 
-                class_to_id = new Gson().fromJson(sb.toString(),new TypeToken<HashMap<String, String>>(){}.getType());
+                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
 
             }
             catch (Exception e){}
             return null;
         }
     }
-    class curriculumData extends AsyncTask<Void, Void, Void>
+    class submitLesson extends AsyncTask<Void, Void, Boolean>
     {
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
             URL url = null;
             try {
-                String data = "req=curriculum";
+                String data = "req=upload_lesson";
+                data+="&data=" + new Gson().toJson(mLesson);
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
@@ -309,44 +292,10 @@ public class UploadLesson extends AppCompatActivity  {
                     sb.append(line);
                 }
 
-                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
-
+                return Boolean.parseBoolean(sb.toString().trim());
             }
             catch (Exception e){}
-            return null;
-        }
-    }
-    class submitLesson extends AsyncTask<Void, Void, Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                String data = "req=upload_lesson";
-                data+="&data=" + new Gson().toJson(mLesson);
-                url = new URL(Infra.Constants.Connections.TeacherServlet());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.connect();
-                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
-                wr.write(data);
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                // Read Server Response
-                while ((line = reader.readLine()) != null) {
-                    // Append server response in string
-                    sb.append(line);
-                }
-
-                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
-
-            }
-            catch (Exception e){}
-            return null;
+            return false;
         }
     }
 }
