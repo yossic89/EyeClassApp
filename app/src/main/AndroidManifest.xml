@@ -52,6 +52,10 @@
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
 
+        <!--Admin-->
+        <activity android:name=".Admin.AdminMenu"></activity>
+        <activity android:name=".Admin.AllUsers"></activity>
+        <activity android:name=".Admin.DeviationForAdmin"></activity>
 
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>

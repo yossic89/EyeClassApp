@@ -15,6 +15,7 @@ import java.net.CookieManager;
 import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
+import eyeclass.eyeclassapp.Admin.AdminMenu;
 import eyeclass.eyeclassapp.Student.StudentSchedule;
 import eyeclass.eyeclassapp.teacher.TeacherMenu;
 
@@ -96,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case Constants.Permissions.Student:
                     startActivity(new Intent(this, StudentSchedule.class));
+                    break;
+                case Constants.Permissions.Admin:
+                    startActivity(new Intent(this, AdminMenu.class));
                     break;
             }
         }
