@@ -134,6 +134,18 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         }
     }
 
+    public void goToTeacherPage(View view)
+    {
+        try
+        {
+            int teacher_page = new teacherPage().execute().get();
+            String text = String.format("your page was %d, teacher page is %d", m_page, teacher_page);
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+            pdfView.jumpTo(teacher_page, true);
+        }
+        catch (Exception e){Toast.makeText(this, "Failed to get teacher page", Toast.LENGTH_LONG).show();}
+    }
+
     @Override
     public void onPageChanged(int page, int pageCount) {
         synchronized (this)
@@ -141,6 +153,39 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             m_page = page;
         }
 
+    }
+
+    class teacherPage extends AsyncTask<Void,Void,Integer>
+    {
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            URL url = null;
+            try {
+                String data = "req=teacher_page";
+                url = new URL(Constants.Connections.StudentServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+
+                return Integer.parseInt(sb.toString().trim());
+            }
+            catch (Exception e){}
+                return null;
+        }
     }
 
     class properties extends AsyncTask<Void, Void, Void>
