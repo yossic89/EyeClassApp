@@ -73,8 +73,10 @@ public class ConnectionTask extends AsyncTask<String, Void, Integer> {
 
             catch(Exception ex) {;System.out.println(ex.toString());}
         }
-
+        int permission = -1;
+        try{ permission = Integer.parseInt(userPerm);}
+        catch (Exception e){}
         // Show response on activity
-        return Integer.parseInt(userPerm);
+        return permission;
     }
 }

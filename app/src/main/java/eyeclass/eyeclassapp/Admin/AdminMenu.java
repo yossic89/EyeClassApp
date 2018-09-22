@@ -25,4 +25,10 @@ public class AdminMenu  extends AppCompatActivity {
         Intent intent = new Intent(this, DeviationForAdmin.class);
         startActivity(intent);
     }
+
+    public void addUser(View view)
+    {
+        Intent intent = new Intent(this, AdminAddUser.class);
+        startActivity(intent);
+    }
 }

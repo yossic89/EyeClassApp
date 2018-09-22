@@ -96,6 +96,7 @@
         android:layout_height="96dp"
         android:text="Display Questions Report"
         android:textStyle="bold"
+        android:onClick="showQuestionReport"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

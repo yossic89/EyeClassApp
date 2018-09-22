@@ -16,6 +16,7 @@ public class Constants {
     }
 
     public static class Permissions{
+        public static final int Error = -1;
         public static final int NoPermission = 0;
         public static final int Admin = 1;
         public static final int Teacher = 2;
