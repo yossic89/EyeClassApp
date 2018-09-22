@@ -384,21 +384,20 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
      */
     @Override
     public void onCaptureDone(String pictureUrl, byte[] pictureData) {
+        int eyesCount = -1;
+        byte[] picture = null;
         if (pictureData != null && pictureUrl != null) {
             //Send deviation data
-            int eyesCount = -1;
             synchronized (this)
             {
                 eyesCount = eyesDetector.getEyesFromImage(pictureData);
             }
             //send photo if needed, otherwise send null
-            byte[] picture = null;
             if (sendMyImage)
                 picture = eyesDetector.getProcceedImage();
-              //  picture = pictureData;
-            DeviationData dd = new DeviationData(eyesCount, picture);
-            new deviationReportSend().execute(dd);
         }
+        DeviationData dd = new DeviationData(eyesCount, picture);
+        new deviationReportSend().execute(dd);
         try
         {
             new checkIfLessonDone(this).execute();
