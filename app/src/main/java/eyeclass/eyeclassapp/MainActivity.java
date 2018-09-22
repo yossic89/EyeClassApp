@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
             int permmision = new ConnectionTask().execute(id, password).get();
             switch (permmision)
             {
+                case Constants.Permissions.Error:
+                    mPasswordView.setText("");
+                    mPasswordView.setError("Network error");
+                    break;
                 case Constants.Permissions.NoPermission:
                     mPasswordView.setText("");
                     mPasswordView.setError("Wrong credentials");
