@@ -5,16 +5,16 @@ import Infra.TableViewBase;
 public class QuestionStatisticForTeacher extends TableViewBase {
     @Override
     protected String[] getTitles() {
-        return new String[]{"ID", "Name", "Class", "Curriculum", "Lesson", "is Right", "Answer"};
+        return new String[]{"ID", "Name", "Class", "Curriculum", "Lesson","Question","Student answer", "is Right"};
     }
 
     @Override
     protected String getUrl() {
-        return null;
+        return Infra.Constants.Connections.TeacherServlet();
     }
 
     @Override
     protected String getReqParam() {
-        return null;
+        return "question_report";
     }
 }
