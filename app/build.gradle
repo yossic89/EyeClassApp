@@ -34,5 +34,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.2.2'
     implementation 'com.github.levitnudi:LegacyTableView:1.2'
     implementation 'com.github.pratikbutani:MultiSelectSpinner:08d324c987'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation project(':openCV')
 }
