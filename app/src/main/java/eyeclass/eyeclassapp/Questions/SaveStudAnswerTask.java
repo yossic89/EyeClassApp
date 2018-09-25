@@ -19,6 +19,7 @@ public class SaveStudAnswerTask extends AsyncTask<String, Void, Integer> {
         String question = params[1];
         String isGoodAns = params[2];
         String studAnswer = params[3];
+        String rightAnswer = params[4];
 
         String data = null;
         try {
@@ -27,6 +28,7 @@ public class SaveStudAnswerTask extends AsyncTask<String, Void, Integer> {
             data += "&" + URLEncoder.encode("question", "UTF-8") + "=" + URLEncoder.encode(question, "UTF-8");
             data += "&" + URLEncoder.encode("is_good_answer", "UTF-8") + "=" + URLEncoder.encode(isGoodAns, "UTF-8");
             data += "&" + URLEncoder.encode("student_answer", "UTF-8") + "=" + URLEncoder.encode(studAnswer, "UTF-8");
+            data += "&" + URLEncoder.encode("right_answer", "UTF-8") + "=" + URLEncoder.encode(rightAnswer, "UTF-8");
 
 
         } catch (UnsupportedEncodingException e) {
