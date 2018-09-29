@@ -1,12 +1,13 @@
 package eyeclass.eyeclassapp.Questions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionData {
     private String id;
     private String question;
     private String rightAns;
-    private List<String> allOptions;
+    private List<String> wrongOptions;
     private String topic;
     private int time;
 
@@ -35,11 +36,13 @@ public class QuestionData {
     }
 
     public List<String> getAllOptions() {
-        return allOptions;
+        List<String> options = new ArrayList<>(wrongOptions);
+        options.add(rightAns);
+        return options;
     }
 
-    public void setAllOptions(List<String> allOptions) {
-        this.allOptions = allOptions;
+    public void setWrongOptions(List<String> allOptions) {
+        this.wrongOptions = allOptions;
     }
 
     public String getTopic() {

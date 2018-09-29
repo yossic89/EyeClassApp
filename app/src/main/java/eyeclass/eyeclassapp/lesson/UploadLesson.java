@@ -28,7 +28,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -211,7 +210,7 @@ public class UploadLesson extends AppCompatActivity  {
                 allOptions.add(mWrongAnswer1);
                 allOptions.add(mWrongAnswer2);
                 allOptions.add(mWrongAnswer3);
-                newQuestion.setAllOptions(allOptions);
+                newQuestion.setWrongOptions(allOptions);
                 newQuestion.setTopic(mTopic);
                 newQuestion.setTime(Integer.parseInt(mTime));
                 questions.add(newQuestion);
