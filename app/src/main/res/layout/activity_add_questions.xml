@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Duration"
-        android:inputType="textPersonName"
+        android:inputType="numberSigned"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.5"

@@ -6,7 +6,6 @@ import eyeclass.eyeclassapp.Questions.QuestionData;
 
 public class LessonData {
     private byte[] lessonFile;
-    private String mClass;
     private String mCurr;
     private String mTitle;
     private List<QuestionData> questions;
@@ -17,14 +16,6 @@ public class LessonData {
 
     public void setLessonFile(byte[] lessonFile) {
         this.lessonFile = lessonFile;
-    }
-
-    public String getmClass() {
-        return mClass;
-    }
-
-    public void setmClass(String mClass) {
-        this.mClass = mClass;
     }
 
     public String getmCurr() {

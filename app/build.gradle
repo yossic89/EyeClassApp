@@ -32,5 +32,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.google.code.gson:gson:2.2.2'
+    implementation 'com.github.levitnudi:LegacyTableView:1.2'
+    implementation 'com.github.pratikbutani:MultiSelectSpinner:08d324c987'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation project(':openCV')
 }

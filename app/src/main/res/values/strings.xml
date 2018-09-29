@@ -9,7 +9,7 @@
         <item>Not Following</item>
         <item>Following</item>
         <item>Not Connected</item>
-
+        <item>Pie View</item>
     </string-array>
 
     <string-array name="view_user_type_option_array">

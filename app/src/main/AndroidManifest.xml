@@ -46,11 +46,18 @@
         <activity android:name=".teacher.TeacherMenu"></activity>
         <activity android:name=".teacher.TeacherLesson"></activity>
         <activity android:name=".teacher.LessonSelect"></activity>
+        <activity android:name=".teacher.DeviationForTeacher"></activity>
+        <activity android:name=".teacher.QuestionStatisticForTeacher"></activity>
         <activity
             android:name=".Questions.QuestionPopUp"
             android:theme="@style/AppTheme.CustomTheme">
         </activity>
 
+        <!--Admin-->
+        <activity android:name=".Admin.AdminMenu"></activity>
+        <activity android:name=".Admin.AllUsers"></activity>
+        <activity android:name=".Admin.DeviationForAdmin"></activity>
+        <activity android:name=".Admin.AdminAddUser"></activity>
 
         <!--Lesson-->
         <activity android:name=".lesson.UploadLesson"></activity>

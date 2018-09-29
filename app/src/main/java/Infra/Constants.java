@@ -9,12 +9,14 @@ public class Constants {
         public static String TeacherServlet() {return HOST() +"/teacher";}
         public static String LoginServlet() {return HOST() + "/login";}
         public static String StudentServlet() {return HOST() + "/student";}
+        public static String AdminServlet() {return HOST() + "/admin";}
         public static String QuestionsDeliveryServlet() {return HOST() + "/questionsDeliveryServlet";}
 
         public static void setIP(String _ip){ip = _ip;}
     }
 
     public static class Permissions{
+        public static final int Error = -1;
         public static final int NoPermission = 0;
         public static final int Admin = 1;
         public static final int Teacher = 2;

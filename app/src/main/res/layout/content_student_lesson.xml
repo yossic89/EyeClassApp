@@ -11,6 +11,20 @@
     <com.github.barteksc.pdfviewer.PDFView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/StudentPDFView" />
+        android:id="@+id/StudentPDFView" >
+
+        <Button
+            android:id="@+id/jump_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="46dp"
+            android:onClick="goToTeacherPage"
+            tools:background="@android:color/holo_blue_dark"
+            tools:textColor="@android:color/white"
+            android:text="Jump To\n Teacher Page" />
+    </com.github.barteksc.pdfviewer.PDFView>
 
 </android.support.constraint.ConstraintLayout>

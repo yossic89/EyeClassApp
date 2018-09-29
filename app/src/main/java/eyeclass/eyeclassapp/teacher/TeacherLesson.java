@@ -19,12 +19,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -76,8 +81,35 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         }
         catch (Exception er) { er.printStackTrace();
         }
-
+        initTrackerSwitch();
         buildQuestionsSelection();
+
+        //build students status spinner
+        //spinner to change students list
+        Spinner spinner = (Spinner) findViewById(R.id.view_students_spinner);
+        spinner.setOnItemSelectedListener(this);
+        //create array of options
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+                R.array.view_students_option_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter2);
+    }
+
+    private void initTrackerSwitch()
+    {
+        Switch s = (Switch)findViewById(R.id.tracker_switch);
+        s.setChecked(true);
+        s.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                boolean isChecked = ((Switch) v).isChecked();
+                new Tracker().execute(isChecked);
+            }
+        });
     }
 
     @Override
@@ -150,45 +182,58 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         questionsFromServer = questions;
     }
 
-    public void displayStudentsStatus()
+    private void setPieChart()
     {
-        String[] studNames =new String[studList.size()];
-
-        Integer[] images = new Integer[studNames.length];
-
-        int i=0;
+        PieChart pie = (PieChart)findViewById(R.id.pie_chart);
+        List<PieEntry> entries = new ArrayList<>();
+        //count students status
+        int concentrated = 0;
+        int notConcentrated = 0;
+        int unknown = 0;
         for (StudentActiveItem k:studList ) {
-            if(k.state == Constants.StudentActiveStateNew.Concentrated)
-                images[i]=R.drawable.greendot;
-            else if (k.state == Constants.StudentActiveStateNew.NotConcentrated)
-                images[i]=R.drawable.reddot;
+            if (k.state == Constants.StudentActiveStateNew.NotConcentrated)
+                notConcentrated++;
+            else if (k.state == Constants.StudentActiveStateNew.Concentrated)
+                concentrated++;
             else if (k.state == Constants.StudentActiveStateNew.Unknown)
-                images[i]=R.drawable.greydot;
-            studNames[i]=k.name;
-            i++;
+                unknown++;
         }
 
-        ListView listView = (ListView)findViewById(R.id.studList);
-        CustomListAdapter adapter=new CustomListAdapter(this, studNames, images);
-        listView.setAdapter(adapter);
-//        listView.setAdapter(new ArrayAdapter<String>(
-//                this, R.layout.teacher_lesson_stud_list,
-//                R.id.StudNameListFocus,studNames,R.id.ImageListFocus,images));
-
-        //spinner to change students list
-        Spinner spinner = (Spinner) findViewById(R.id.view_students_spinner);
-        spinner.setOnItemSelectedListener(this);
-        //create array of options
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
-                R.array.view_students_option_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter2);
+        entries.add(new PieEntry(concentrated, "Concentrated"));
+        entries.add(new PieEntry(notConcentrated, "Not Concentrated"));
+        entries.add(new PieEntry(unknown, "Unknown"));
+        PieDataSet set = new PieDataSet(entries, "Student status");
+        set.setColors(new int[] { Color.GREEN, Color.RED, Color.GRAY});
+        PieData data = new PieData(set);
+        data.setHighlightEnabled(false);
+        pie.setData(data);
+        pie.setDrawCenterText(true);
+        pie.setDrawHoleEnabled(false);
+        pie.setEntryLabelColor(Color.BLACK);
+        pie.invalidate(); // refresh
     }
+
+    private void handleSpinnerStatus(int pos)
+    {
+        //if select pie chart
+        if (pos == 4)
+        {
+            findViewById(R.id.studList).setVisibility(View.GONE);
+            findViewById(R.id.pie_chart).setVisibility(View.VISIBLE);
+            setPieChart();
+        }
+
+        else
+        {
+            findViewById(R.id.studList).setVisibility(View.VISIBLE);
+            findViewById(R.id.pie_chart).setVisibility(View.GONE);
+            //activate the correct choice
+            displayByPosition(pos);
+        }
+    }
+
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        //activate the correct choice
-        displayByPosition(pos);
+        handleSpinnerStatus(pos);
     }
     public void onNothingSelected(AdapterView<?> parent) {}
 
@@ -375,7 +420,9 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
         @Override
         protected void onPostExecute(Void result) {
 
-            displayStudentsStatus();
+            //get spinner position
+            int pos = ((Spinner) findViewById(R.id.view_students_spinner)).getSelectedItemPosition();
+            handleSpinnerStatus(pos);
             if (!isFinishing())
                 new studentsStatus().execute(false);
         }
@@ -437,6 +484,41 @@ public class TeacherLesson extends AppCompatActivity implements OnPageChangeList
                 e.printStackTrace();
             }
 
+            return null;
+        }
+    }
+
+    class Tracker extends AsyncTask<Boolean, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Boolean... booleans) {
+            boolean track = booleans[0];
+            URL url = null;
+            StringBuilder sb = new StringBuilder();
+            try {
+                String data = "req=tracker";
+                data += "&" + Infra.Constants.Teacher.Class_id + "=" + class_id;
+                data += "&track=" + track;
+                url = new URL(Infra.Constants.Connections.TeacherServlet());
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.connect();
+                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line = null;
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    // Append server response in string
+                    sb.append(line);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }

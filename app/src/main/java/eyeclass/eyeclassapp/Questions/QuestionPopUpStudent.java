@@ -27,7 +27,7 @@ public class QuestionPopUpStudent extends Activity {
     private List<String> randomOptions;
     private QuestionData questionData;
     private boolean isAnswerPopUpDisplay = false;
-    private int time=30;
+    private int time;
     private int timeOfAnswerPopUp = -1;
     private final int ANSWER_POP_UP = 10;
 
@@ -126,14 +126,14 @@ public class QuestionPopUpStudent extends Activity {
         RadioButton r = (RadioButton)  radioButtonGroup.getChildAt(idx);
         String selectedtext = r.getText().toString().substring(1);
         if (questionData.getRightAns().equals(selectedtext)) {
-            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"true",selectedtext);
+            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"true",selectedtext,questionData.getRightAns());
             Intent intent = new Intent(QuestionPopUpStudent.this, GoodAnswer.class);
             startActivityForResult(intent,ANSWER_POP_UP);
             isAnswerPopUpDisplay = true;
             timeOfAnswerPopUp = 4;
         }
         else{
-            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"false",selectedtext);
+            new SaveStudAnswerTask().execute(questionData.getId(),questionData.getQuestion(),"false",selectedtext,questionData.getRightAns());
             Intent intent = new Intent(QuestionPopUpStudent.this, WrongAnswer.class);
             startActivityForResult(intent,ANSWER_POP_UP);
             isAnswerPopUpDisplay = true;
@@ -143,8 +143,8 @@ public class QuestionPopUpStudent extends Activity {
 
     private void displayTime(){
         TextView textTimer = (TextView)findViewById(R.id.que_pop_stud_timer);
-
-        new CountDownTimer(30000, 1000) {
+        time = questionData.getTime();
+        new CountDownTimer(questionData.getTime()*1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 if (time < 5) textTimer.setTextColor(Color.parseColor("#ff0000"));

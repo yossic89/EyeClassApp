@@ -25,9 +25,9 @@ public class QuestionPopUp extends Activity {
     public int index;
     public String questions = "";
     private Gson gson = new Gson();
-    private int time=31;
+    private int time;
     private String class_id;
-
+    private  QuestionData questionData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -60,12 +60,14 @@ public class QuestionPopUp extends Activity {
     private void displayQuestions(){
         String passedArg = getIntent().getExtras().getString("questionData");
         questions = passedArg;
-        QuestionData questionData = gson.fromJson(passedArg,QuestionData.class);
+        questionData = gson.fromJson(passedArg,QuestionData.class);
         setSizeOfPopUp();
         TextView question =(TextView)findViewById(R.id.que_pop_question);
         question.setText(" " + questionData.getQuestion());
         TextView correctAnswer =(TextView)findViewById(R.id.que_pop_correct_answer);
         correctAnswer.setText(" " + questionData.getRightAns());
+        TextView timeForQuestion =(TextView)findViewById(R.id.que_pop_time);
+        timeForQuestion.setText(String.valueOf(questionData.getTime()));
         TextView option = null;
         for(int i = 1;i < questionData.getAllOptions().size(); i++){
             switch(i){
@@ -98,10 +100,11 @@ public class QuestionPopUp extends Activity {
         TextView t = (TextView)findViewById(R.id.que_pop_teacher_t);
         t.setText("Time:");
         TextView textTimer = (TextView)findViewById(R.id.que_pop_teacher_timer);
+        time = questionData.getTime() + 1;
 
-        new CountDownTimer(30000, 1000) {
+        new CountDownTimer((questionData.getTime() + 1)*1000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
+            public void onTick(long millisntilFinished) {
                 textTimer.setText("0:"+checkDigit(time));
                 time--;
             }

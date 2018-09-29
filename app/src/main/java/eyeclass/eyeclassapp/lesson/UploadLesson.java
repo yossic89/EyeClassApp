@@ -38,10 +38,8 @@ import eyeclass.eyeclassapp.R;
 public class UploadLesson extends AppCompatActivity  {
     static final int READ_REQ = 24;
     private static LessonData mLesson;
-    private HashMap<String, String> class_to_id = new HashMap<>();
     private List<String> currList;
     Spinner curriculums;
-    Spinner classes;
 
         ViewGroup cont;
         ListView contactLst;
@@ -53,7 +51,6 @@ public class UploadLesson extends AppCompatActivity  {
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             try {
-                new classesData().execute().get();
                 new curriculumData().execute().get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -63,19 +60,7 @@ public class UploadLesson extends AppCompatActivity  {
 
             mLesson=new LessonData();
             curriculums = findViewById(R.id.spinner_cur_add_lesson);
-            classes = findViewById(R.id.spinner_class_add_lesson);
-            classes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String classStr = parent.getItemAtPosition(position).toString();
-                    mLesson.setmClass(class_to_id.get(classStr));
-                }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
             curriculums.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -94,15 +79,6 @@ public class UploadLesson extends AppCompatActivity  {
             adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             curSpinner.setAdapter(adapter1);
 
-            List<String> data =  new ArrayList<>();
-            for (Object obj : class_to_id.keySet())
-                data.add(obj.toString());
-            Spinner classSpinner = findViewById(R.id.spinner_class_add_lesson);
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, data);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            classSpinner.setAdapter(adapter2);
-
-            mLesson.setmTitle(findViewById(R.id.title_lesson).toString());
         }
 
     public void readFile(View view) {
@@ -113,26 +89,30 @@ public class UploadLesson extends AppCompatActivity  {
         }
 
     public void submit(View view) {
-        System.out.println("YAMIT 111111");
-            //if(mLesson.getLessonFile() == null)
-             //   Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
-            //else{
+        mLesson.setmTitle(((EditText)findViewById(R.id.title_lesson)).getText().toString());
+            if(mLesson.getLessonFile() == null)
+                Toast.makeText(UploadLesson.this, "Your must choose a file", Toast.LENGTH_LONG).show();
+            else if (mLesson.getmTitle() == null || mLesson.getmTitle().isEmpty())
+                Toast.makeText(UploadLesson.this, "Please fill lesson Title", Toast.LENGTH_LONG).show();
+            else{
+                boolean isUpload = false;
                 try {
-                    System.out.println("YAMIT 22222");
-
-                    new submitLesson().execute().get();
-                    System.out.println("YAMIT 33333");
-
+                    isUpload = new submitLesson().execute().get();
                 } catch (Exception e) {
-                    System.out.println("YAMIT 44444");
-
                     e.printStackTrace();
                 }
-                //TODO wait for server response
-                //loader
-                Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();
-                finish();
-           // }
+                //TODO LOADER
+
+                if(isUpload)
+                {
+                    Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                else
+                    Toast.makeText(UploadLesson.this, "Failed to load lesson to server", Toast.LENGTH_LONG).show();
+
+
+            }
 
     }
 
@@ -203,13 +183,18 @@ public class UploadLesson extends AppCompatActivity  {
 
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                 questions = new ArrayList<QuestionData>();
-                mTopic = findViewById(R.id.topic_quest).toString();
-                mTime = findViewById(R.id.time_quest).toString();
-                mQuestion = findViewById(R.id.question_quest).toString();
-                mCorrectAnswer = findViewById(R.id.correct_ans_quest).toString();
-                mWrongAnswer1 = findViewById(R.id.wrong_ans_1_quest).toString();
-                mWrongAnswer2 = findViewById(R.id.wrong_ans_2_quest).toString();
-                mWrongAnswer3 = findViewById(R.id.wrong_ans_3_quest).toString();
+
+            }
+
+            private void readFromScreen()
+            {
+                mTopic = ((EditText)findViewById(R.id.topic_quest)).getText().toString();
+                mTime = ((EditText)findViewById(R.id.time_quest)).getText().toString();
+                mQuestion = ((EditText)findViewById(R.id.question_quest)).getText().toString();
+                mCorrectAnswer = ((EditText)findViewById(R.id.correct_ans_quest)).getText().toString();
+                mWrongAnswer1 = ((EditText)findViewById(R.id.wrong_ans_1_quest)).getText().toString();
+                mWrongAnswer2 = ((EditText)findViewById(R.id.wrong_ans_2_quest)).getText().toString();
+                mWrongAnswer3 = ((EditText)findViewById(R.id.wrong_ans_3_quest)).getText().toString();
             }
 
             public void submitQuestion(View view) {
@@ -220,7 +205,7 @@ public class UploadLesson extends AppCompatActivity  {
             }
 
             public void addQuestionToList(View view) {
-
+                readFromScreen();
                 QuestionData newQuestion = new QuestionData();
                 newQuestion.setQuestion(mQuestion);
                 newQuestion.setRightAns(mCorrectAnswer);
@@ -230,7 +215,7 @@ public class UploadLesson extends AppCompatActivity  {
                 allOptions.add(mWrongAnswer3);
                 newQuestion.setAllOptions(allOptions);
                 newQuestion.setTopic(mTopic);
-                newQuestion.setTime(mTime);
+                newQuestion.setTime(Integer.parseInt(mTime));
                 questions.add(newQuestion);
                 Toast.makeText(AddQuestions.this, "The question has been saved successfully", Toast.LENGTH_LONG).show();
                 //delete screen content
@@ -244,38 +229,8 @@ public class UploadLesson extends AppCompatActivity  {
 
             }
         }
-    class classesData extends AsyncTask<Void, Void, Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            URL url = null;
-            try {
-                String data = "req=classes";
-                url = new URL(Infra.Constants.Connections.TeacherServlet());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setDoOutput(true);
-                conn.setRequestMethod("POST");
-                conn.connect();
-                java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
-                wr.write(data);
-                wr.flush();
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                // Read Server Response
-                while ((line = reader.readLine()) != null) {
-                    // Append server response in string
-                    sb.append(line);
-                }
 
-                class_to_id = new Gson().fromJson(sb.toString(),new TypeToken<HashMap<String, String>>(){}.getType());
-
-            }
-            catch (Exception e){}
-            return null;
-        }
-    }
     class curriculumData extends AsyncTask<Void, Void, Void>
     {
         @Override
@@ -308,10 +263,10 @@ public class UploadLesson extends AppCompatActivity  {
             return null;
         }
     }
-    class submitLesson extends AsyncTask<Void, Void, Void>
+    class submitLesson extends AsyncTask<Void, Void, Boolean>
     {
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
             URL url = null;
             try {
                 String data = "req=upload_lesson";
@@ -320,6 +275,9 @@ public class UploadLesson extends AppCompatActivity  {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
+                conn.setUseCaches(false);
                 conn.connect();
                 java.io.OutputStreamWriter wr = new java.io.OutputStreamWriter(conn.getOutputStream());
                 wr.write(data);
@@ -334,11 +292,10 @@ public class UploadLesson extends AppCompatActivity  {
                     sb.append(line);
                 }
 
-                currList= new Gson().fromJson(sb.toString(),new TypeToken<List<String>>(){}.getType());
-
+                return Boolean.parseBoolean(sb.toString().trim());
             }
             catch (Exception e){}
-            return null;
+            return false;
         }
     }
 }

@@ -25,4 +25,16 @@ public class TeacherMenu extends AppCompatActivity {
         Intent intent = new Intent(this, LessonSelect.class);
         startActivity(intent);
     }
+
+    public void showDeviation(View view)
+    {
+        Intent intent = new Intent(this, DeviationForTeacher.class);
+        startActivity(intent);
+    }
+
+    public void showQuestionReport(View view)
+    {
+        Intent intent = new Intent(this, QuestionStatisticForTeacher.class);
+        startActivity(intent);
+    }
 }
