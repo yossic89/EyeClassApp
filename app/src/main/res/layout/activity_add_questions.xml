@@ -53,17 +53,18 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
         app:layout_constraintVertical_bias="0.85"></Button>
 
-    <ImageView
+    <TextView
         android:id="@+id/add_quest_title"
         android:layout_width="221dp"
         android:layout_height="53dp"
         android:layout_marginEnd="8dp"
+        android:text="Add Question"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add_quastions" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/question_quest"

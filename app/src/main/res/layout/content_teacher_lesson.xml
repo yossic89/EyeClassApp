@@ -9,17 +9,18 @@
     tools:showIn="@layout/activity_teacher_lesson">
 
 
-    <ImageView
+    <TextView
         android:id="@+id/questions_headline"
-        android:layout_width="80dp"
+        android:layout_width="90dp"
         android:layout_height="55dp"
         android:layout_marginTop="44dp"
+        android:text="Questions"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.868"
         app:layout_constraintLeft_creator="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/questions" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
@@ -55,17 +56,6 @@
             android:gravity="left"
             android:padding="10dp">
 
-            <!--        <TextView
-                        android:id="@+id/show_que"
-                        android:layout_width="38dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="3dip"
-                        android:text="הצג"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        tools:textSize="8sp" /> -->
 
             <TextView
                 android:id="@+id/answer_que"
@@ -90,16 +80,6 @@
                 android:textStyle="bold"
                 tools:textSize="8sp" />
 
-            <!--    <TextView
-                    android:id="@+id/topic_que"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="3dip"
-                    android:text="נושא"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    tools:textSize="8sp" /> -->
         </TableRow>
     </TableLayout>
 
@@ -114,16 +94,17 @@
         tools:layout_editor_absoluteY="100dp" />
 
 
-    <ImageView
+    <TextView
         android:id="@+id/students_headline"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="36dp"
+        android:text="Students"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/students" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ListView
@@ -170,6 +151,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
 
+
     <Switch
         android:id="@+id/tracker_switch"
         android:layout_width="wrap_content"
@@ -180,13 +162,7 @@
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--
-        <Button
-            android:id="@+id/buttonShowQuestion"
-            android:padding="3dip"
-            android:text="show"
-            tools:textSize="8sp" />
-     -->
+
 
 
 </android.support.constraint.ConstraintLayout>
