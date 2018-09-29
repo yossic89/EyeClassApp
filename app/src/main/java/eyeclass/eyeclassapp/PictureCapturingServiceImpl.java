@@ -1,7 +1,6 @@
 package eyeclass.eyeclassapp;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
@@ -15,16 +14,13 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,6 +95,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 openCamera();
             } else {
                 //No camera detected!
+                capturingListener.onCaptureDone(null, null);
                 capturingListener.onDoneCapturingAllPhotos(picturesTaken);
             }
         } catch (final CameraAccessException e) {
