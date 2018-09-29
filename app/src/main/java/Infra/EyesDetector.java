@@ -75,7 +75,6 @@ public class EyesDetector {
         }
         catch(Exception e)
         {
-            System.out.println("error - 33333333");
             e.printStackTrace();
         }
         return classifier.getAbsolutePath();

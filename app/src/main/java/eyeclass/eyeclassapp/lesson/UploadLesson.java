@@ -101,8 +101,6 @@ public class UploadLesson extends AppCompatActivity  {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //TODO LOADER
-
                 if(isUpload)
                 {
                     Toast.makeText(UploadLesson.this, "The lesson has been saved successfully", Toast.LENGTH_LONG).show();

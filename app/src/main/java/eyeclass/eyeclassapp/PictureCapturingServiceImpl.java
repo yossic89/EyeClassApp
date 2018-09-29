@@ -91,9 +91,8 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 if(cOrientation == CameraCharacteristics.LENS_FACING_FRONT) currentCameraId= cameraId;
             }
             System.out.println("********currentCameraId: "+currentCameraId);
-            System.out.println("BBBBBBBBBBBB " + cameraIds.length);
+            System.out.println("********camers in comp " + cameraIds.length);
             if (cameraIds.length > 0) {
-                System.out.println("***** here "+cameraIds);
                 this.cameraIds.addAll(Arrays.asList(cameraIds));
                 this.currentCameraId = this.cameraIds.poll();
                 openCamera();
@@ -102,7 +101,6 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 capturingListener.onDoneCapturingAllPhotos(picturesTaken);
             }
         } catch (final CameraAccessException e) {
-            System.out.println("CCCCCCCC " + e);
             Log.e(TAG, "Exception occurred while accessing the list of cameras", e);
         }
     }
@@ -117,7 +115,7 @@ public class PictureCapturingServiceImpl extends APictureCapturingService {
                 manager.openCamera(currentCameraId, stateCallback, null);
             }
             else{
-                System.out.println("Error a: " + a +" b: " + b);
+                System.out.println("Error :No permmisins");
             }
         } catch (final CameraAccessException e) {
             Log.e(TAG, " exception occurred while opening camera " + currentCameraId, e);

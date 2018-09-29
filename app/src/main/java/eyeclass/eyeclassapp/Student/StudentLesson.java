@@ -82,7 +82,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
             pdfView.fromStream(pdf).onPageChange(this).load();
         } catch (Exception e) {
-            System.out.println("error - aaaaaaaaa");
             e.printStackTrace();
         }
         //init eyes detector
@@ -106,7 +105,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            System.out.println("error - bbbbbbb");
             e.printStackTrace();
         }
 
@@ -221,7 +219,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
 
 
             } catch (Exception e) {
-                System.out.println("error - cccccccccc");
                 e.printStackTrace();
             }
             return null;
@@ -248,7 +245,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 return conn.getInputStream();
 
             } catch (Exception e) {
-                System.out.println("error - dddddddddd");
                 e.printStackTrace();
             }
 
@@ -320,7 +316,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 }
 
             } catch (Exception e) {
-                System.out.println("error - eeeeeeeeee");
                 e.printStackTrace();
             }
 
@@ -364,7 +359,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                 status = Boolean.parseBoolean(sb.toString().trim());
             }
             catch (Exception e) {
-                System.out.println("error - fffffffffff");
                 e.printStackTrace();
             }
             return null;
@@ -403,7 +397,7 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
             new checkIfLessonDone(this).execute();
         }
         catch (Exception e){
-            System.out.println("error - 111111111");e.printStackTrace();}
+            e.printStackTrace();}
     }
 
 
@@ -469,7 +463,6 @@ public class StudentLesson extends AppCompatActivity implements OnPageChangeList
                                 {
                                     cancel();
                                 }
-                                System.out.println("questionsRes " + questionsRes);
                                 if (questionsRes == 1) {
                                     Intent intent = new Intent(StudentLesson.this, QuestionPopUpStudent.class);
                                     intent.putExtra("questionData", GetQuestionTask.getQuestionData());
