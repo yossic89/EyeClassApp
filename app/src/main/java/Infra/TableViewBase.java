@@ -26,7 +26,7 @@ public abstract class TableViewBase extends AppCompatActivity {
 
     LegacyTableView legacyTableView;
     String[] titles;
-    List<List<String>> cells_data;
+    List<List<String>> cells_data = null;
 
     protected abstract String[] getTitles();
     protected abstract String getUrl();
@@ -71,12 +71,16 @@ public abstract class TableViewBase extends AppCompatActivity {
         String reqParam = getReqParam();
         try{new getTableDataServer().execute(url, reqParam).get();}
         catch(Exception e){}
+        //validate there is data
+        if (cells_data == null)
+            cells_data = new ArrayList<>();
         showAll();
     }
 
     private void showAll()
     {
         List<String> data = new ArrayList<>();
+
         for(List<String> l : cells_data)
         {
             for(String s : l)
