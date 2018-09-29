@@ -179,17 +179,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-    <ImageView
-        android:id="@+id/imageView3"
+    <TextView
+        android:id="@+id/add_user_title"
         android:layout_width="221dp"
         android:layout_height="53dp"
         android:layout_marginEnd="8dp"
+        android:text="Add User"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/add_user" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

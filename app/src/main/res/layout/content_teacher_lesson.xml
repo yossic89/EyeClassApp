@@ -22,15 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="serif"
-        android:gravity="center"
-        android:text="Employees"
-        android:textColor="#000"
-        android:textSize="20sp" />
-
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/questionsTableLayout"
         android:layout_width="334dp"
@@ -94,19 +85,6 @@
         tools:layout_editor_absoluteY="100dp" />
 
 
-    <TextView
-        android:id="@+id/students_headline"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="36dp"
-        android:text="Students"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
     <ListView
         android:id="@+id/studList"
         android:layout_width="170dp"
@@ -156,10 +134,11 @@
         android:id="@+id/tracker_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Tracker"
+        android:layout_marginTop="52dp"
+        android:text="Students Tracker"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
