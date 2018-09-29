@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -103,8 +104,10 @@ public class LessonSelect extends AppCompatActivity {
     private void initClassSpinner()
     {
         List<String> data =  new ArrayList<>();
+
         for (Object obj : class_to_id.keySet())
             data.add(obj.toString());
+        Collections.sort(data);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
