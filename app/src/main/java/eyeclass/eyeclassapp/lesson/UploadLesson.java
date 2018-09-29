@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
@@ -27,8 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -155,7 +156,7 @@ public class UploadLesson extends AppCompatActivity  {
                 }
 
                 //send to server as byte[]
-                mLesson.setLessonFile(byteBuffer.toByteArray());
+                 mLesson.setLessonFile(byteBuffer.toByteArray());
                 Toast.makeText(UploadLesson.this, "Your file has been saved successfully", Toast.LENGTH_LONG).show();
 
                 inputStream.close();
@@ -184,7 +185,7 @@ public class UploadLesson extends AppCompatActivity  {
 
             }
 
-            private void readFromScreen()
+            private boolean readFromScreen()
             {
                 mTopic = ((EditText)findViewById(R.id.topic_quest)).getText().toString();
                 mTime = ((EditText)findViewById(R.id.time_quest)).getText().toString();
@@ -193,6 +194,9 @@ public class UploadLesson extends AppCompatActivity  {
                 mWrongAnswer1 = ((EditText)findViewById(R.id.wrong_ans_1_quest)).getText().toString();
                 mWrongAnswer2 = ((EditText)findViewById(R.id.wrong_ans_2_quest)).getText().toString();
                 mWrongAnswer3 = ((EditText)findViewById(R.id.wrong_ans_3_quest)).getText().toString();
+                boolean valid =  mTopic.isEmpty() || mTime.isEmpty() || mQuestion.isEmpty() || mCorrectAnswer.isEmpty()
+                        || mWrongAnswer1.isEmpty() || mWrongAnswer2.isEmpty() || mWrongAnswer3.isEmpty();
+                return !valid;
             }
 
             public void submitQuestion(View view) {
@@ -203,7 +207,10 @@ public class UploadLesson extends AppCompatActivity  {
             }
 
             public void addQuestionToList(View view) {
-                readFromScreen();
+                if (!readFromScreen()) {
+                    Toast.makeText(AddQuestions.this, "Please fill all question data", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 QuestionData newQuestion = new QuestionData();
                 newQuestion.setQuestion(mQuestion);
                 newQuestion.setRightAns(mCorrectAnswer);
@@ -211,7 +218,7 @@ public class UploadLesson extends AppCompatActivity  {
                 allOptions.add(mWrongAnswer1);
                 allOptions.add(mWrongAnswer2);
                 allOptions.add(mWrongAnswer3);
-                newQuestion.setAllOptions(allOptions);
+                newQuestion.setWrongOptions(allOptions);
                 newQuestion.setTopic(mTopic);
                 newQuestion.setTime(Integer.parseInt(mTime));
                 questions.add(newQuestion);
@@ -268,7 +275,7 @@ public class UploadLesson extends AppCompatActivity  {
             URL url = null;
             try {
                 String data = "req=upload_lesson";
-                data+="&data=" + new Gson().toJson(mLesson);
+                data+="&data=" + URLEncoder.encode(new Gson().toJson(mLesson), "UTF-8");
                 url = new URL(Infra.Constants.Connections.TeacherServlet());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setDoOutput(true);

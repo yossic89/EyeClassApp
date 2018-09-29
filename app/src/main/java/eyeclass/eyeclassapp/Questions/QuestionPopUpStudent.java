@@ -66,8 +66,8 @@ public class QuestionPopUpStudent extends Activity {
         randomOptions = questionData.getAllOptions();
         Collections.shuffle(randomOptions);
         int i;
-        for(i = 1;i <= questionData.getAllOptions().size(); i++){
-            switch(i){
+        for(i = 0;i < questionData.getAllOptions().size(); i++){
+            switch(i + 1){
                 case 1:
                     option = (RadioButton)findViewById(R.id.que_pop_stud_opt1);
                     break;
@@ -87,9 +87,9 @@ public class QuestionPopUpStudent extends Activity {
                     option = (RadioButton)findViewById(R.id.que_pop_stud_opt6);
                     break;
             }
-            option.setText(" " + option.getText() + randomOptions.get(i-1));
+            option.setText(" " + option.getText() + randomOptions.get(i));
         }
-        for(;i<=6;i++){
+        for(i = questionData.getAllOptions().size() + 1;i<=6;i++){
             switch(i){
                 case 1:
                     option = (RadioButton)findViewById(R.id.que_pop_stud_opt1);
@@ -148,7 +148,9 @@ public class QuestionPopUpStudent extends Activity {
 
             public void onTick(long millisUntilFinished) {
                 if (time < 5) textTimer.setTextColor(Color.parseColor("#ff0000"));
-                textTimer.setText("0:"+checkDigit(time));
+                String min = checkDigit(time / 60);
+                String sec = checkDigit(time % 60);
+                textTimer.setText(min + ":" + sec);
                 time--;
                 if (isAnswerPopUpDisplay){
                     timeOfAnswerPopUp--;

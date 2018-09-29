@@ -69,30 +69,25 @@ public class QuestionPopUp extends Activity {
         //TextView timeForQuestion =(TextView)findViewById(R.id.que_pop_time);
        // timeForQuestion.setText(String.valueOf(questionData.getTime()));
         TextView option = null;
-        for(int i = 1;i < questionData.getAllOptions().size(); i++){
-            switch(i){
+        for(int i = 0;i < questionData.getAllOptions().size(); i++){
+            switch(i + 1){
                 case 1:
                     option = (TextView)findViewById(R.id.que_pop_opt1);
-                    option.setText("1. ");
                     break;
                 case 2:
                     option = (TextView)findViewById(R.id.que_pop_opt2);
-                    option.setText("2. ");
                     break;
                 case 3:
                     option = (TextView)findViewById(R.id.que_pop_opt3);
-                    option.setText("3. ");
                     break;
                 case 4:
                     option = (TextView)findViewById(R.id.que_pop_opt4);
-                    option.setText("4. ");
                     break;
                 case 5:
                     option = (TextView)findViewById(R.id.que_pop_opt5);
-                    option.setText("5. ");
                     break;
             }
-            option.setText(option.getText() + questionData.getAllOptions().get(i));
+            option.setText((i+1)+ ". " + questionData.getAllOptions().get(i));
         }
     }
 
@@ -100,18 +95,24 @@ public class QuestionPopUp extends Activity {
         TextView t = (TextView)findViewById(R.id.que_pop_teacher_t);
         t.setText("Time:");
         TextView textTimer = (TextView)findViewById(R.id.que_pop_teacher_timer);
-        time = questionData.getTime() + 1;
+        time = questionData.getTime();
 
-        new CountDownTimer((questionData.getTime() + 1)*1000, 1000) {
+        new CountDownTimer((time + 1)*1000, 1000) {
 
             public void onTick(long millisntilFinished) {
-                textTimer.setText("0:"+checkDigit(time));
+                String min = checkDigit(time / 60);
+                String sec = checkDigit(time % 60);
+                textTimer.setText(min + ":" + sec);
                 time--;
+                if (time <= 0)
+                    textTimer.setText("DONE");
             }
 
             public void onFinish() {
                 new DeliveryQuestionsTask().execute("clear", class_id);
-                textTimer.setText("DONE");
+                try{Thread.sleep(500);}
+                catch (Exception e){}
+                finish();
             }
 
         }.start();
