@@ -10,11 +10,10 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
-        android:text="Select lesson"
-        android:textSize="24sp"
+        android:layout_marginTop="116dp"
+        android:text="Choose Lesson"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.339"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3" />
 
@@ -22,11 +21,10 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="216dp"
-        android:text="Select class"
-        android:textSize="24sp"
+        android:layout_marginTop="224dp"
+        android:text="Choose Class"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3" />
 
@@ -75,17 +73,18 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
         app:layout_constraintVertical_bias="0.358"></Button>
 
-    <ImageView
-        android:id="@+id/add_lesson_title"
+    <TextView
+        android:id="@+id/select_lesson_title"
         android:layout_width="221dp"
         android:layout_height="53dp"
         android:layout_marginEnd="8dp"
+        android:text="Select Lesson"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/select_lesson" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner_class"
@@ -124,10 +123,10 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select curriculum"
-        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        android:text="Choose Curriculum"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.354"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3" />
 
