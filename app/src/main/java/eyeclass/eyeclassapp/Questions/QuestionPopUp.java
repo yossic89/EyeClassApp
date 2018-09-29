@@ -66,8 +66,8 @@ public class QuestionPopUp extends Activity {
         question.setText(" " + questionData.getQuestion());
         TextView correctAnswer =(TextView)findViewById(R.id.que_pop_correct_answer);
         correctAnswer.setText(" " + questionData.getRightAns());
-        TextView timeForQuestion =(TextView)findViewById(R.id.que_pop_time);
-        timeForQuestion.setText(String.valueOf(questionData.getTime()));
+        //TextView timeForQuestion =(TextView)findViewById(R.id.que_pop_time);
+       // timeForQuestion.setText(String.valueOf(questionData.getTime()));
         TextView option = null;
         for(int i = 1;i < questionData.getAllOptions().size(); i++){
             switch(i){

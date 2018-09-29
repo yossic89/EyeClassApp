@@ -53,7 +53,7 @@ public class SaveStudAnswerTask extends AsyncTask<String, Void, Integer> {
         }
         catch(Exception ex)
         {
-            System.out.println("on ex:" + ex.toString());
+            ex.printStackTrace();
         }
 
         return 1;

@@ -5,7 +5,7 @@ import Infra.TableViewBase;
 public class QuestionStatisticForTeacher extends TableViewBase {
     @Override
     protected String[] getTitles() {
-        return new String[]{"ID", "Name", "Class", "Curriculum", "Lesson","Question","Student answer", "is Right"};
+        return new String[]{"ID", "Name", "Class", "Curriculum", "Lesson","Question","Right Answer", "Student answer", "is Right"};
     }
 
     @Override

@@ -47,14 +47,13 @@ public class GetQuestionTask  extends AsyncTask<Void, Void, Integer> {
                 // Append server response in string
                 sb.append(line);
             }
-            System.out.println("************ sb is: " + sb);
             if (!(sb.toString().equals("null")))
                 setQuestionData(sb.toString());
 
         }
         catch(Exception ex)
         {
-            System.out.println("on ex:" + ex.toString());
+            ex.printStackTrace();
         }
 
         if (!(sb.toString().equals("null"))) return 1;
