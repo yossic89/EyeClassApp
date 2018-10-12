@@ -45,7 +45,7 @@ public class StudentNoLesson extends AppCompatActivity {
                 funFacts.setTextColor(Color.parseColor("#000000"));
                 if (facts.size()>0) funFacts.setText(facts.get(shuffleIndex));
                 shuffleIndex++;
-                if ( shuffleIndex > 20 ) shuffleIndex = 0;
+                if ( shuffleIndex > 19 ) shuffleIndex = 0;
             }});
 
     }
