@@ -26,7 +26,7 @@ import Infra.Constants;
 import eyeclass.eyeclassapp.MainActivity;
 import eyeclass.eyeclassapp.R;
 
-public class StudentSchedule extends AppCompatActivity {
+public class StudentNoLesson extends AppCompatActivity {
     private List<String> facts = new ArrayList<>();
     private int shuffleIndex = 0;
     TextView funFacts;
@@ -55,7 +55,6 @@ public class StudentSchedule extends AppCompatActivity {
         super.onStart();
         try {
             new WaitForLesson().execute();
-            //startActivity(new Intent(StudentSchedule.this, StudentLesson.class));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,7 +107,7 @@ public class StudentSchedule extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result){
-            startActivity(new Intent(StudentSchedule.this, StudentLesson.class));
+            startActivity(new Intent(StudentNoLesson.this, StudentLesson.class));
         }
     }
 

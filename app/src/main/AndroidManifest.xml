@@ -37,7 +37,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".Student.StudentSchedule"
+            android:name=".Student.StudentNoLesson"
             android:label="@string/title_activity_student_schedule"
 
             android:theme="@style/AppTheme.NoActionBar"></activity>

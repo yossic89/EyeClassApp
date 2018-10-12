@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 import Infra.Constants;
 import eyeclass.eyeclassapp.Admin.AdminMenu;
-import eyeclass.eyeclassapp.Student.StudentSchedule;
+import eyeclass.eyeclassapp.Student.StudentNoLesson;
 import eyeclass.eyeclassapp.teacher.TeacherMenu;
 
 public class MainActivity extends AppCompatActivity {
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(this, TeacherMenu.class));
                     break;
                 case Constants.Permissions.Student:
-                    startActivity(new Intent(this, StudentSchedule.class));
+                    startActivity(new Intent(this, StudentNoLesson.class));
                     break;
                 case Constants.Permissions.Admin:
                     startActivity(new Intent(this, AdminMenu.class));
