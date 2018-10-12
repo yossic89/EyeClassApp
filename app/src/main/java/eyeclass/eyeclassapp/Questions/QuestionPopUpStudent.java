@@ -164,6 +164,9 @@ public class QuestionPopUpStudent extends Activity {
             public void onFinish() {
                 if(isAnswerPopUpDisplay) finishActivity(ANSWER_POP_UP);
                 textTimer.setText("DONE");
+                try{Thread.sleep(500);}
+                catch (Exception e){}
+                finish();
             }
 
         }.start();

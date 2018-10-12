@@ -30,24 +30,13 @@ public class StudentNoLesson extends AppCompatActivity {
     private List<String> facts = new ArrayList<>();
     private int shuffleIndex = 0;
     TextView funFacts;
+    private Button suffle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_schedule);
-        funFacts = (TextView) findViewById(R.id.fun_facts);
-        funFacts.setText("\n\nClick on shuffle to see some facts and learn something new!");
-        funFacts.setTextColor(Color.parseColor("#870274"));
-        Button suffle = (Button) findViewById(R.id.shuffle_btn);
-        suffle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                funFacts.setTextColor(Color.parseColor("#000000"));
-                if (facts.size()>0) funFacts.setText(facts.get(shuffleIndex));
-                shuffleIndex++;
-                if ( shuffleIndex > 20 ) shuffleIndex = 0;
-            }});
-
+        funFacts();
     }
 
     @Override
@@ -60,6 +49,24 @@ public class StudentNoLesson extends AppCompatActivity {
         }
     }
 
+    private void funFacts()
+    {
+        try{new listOfFacts().execute().get();}
+        catch (Exception e){return;}
+        suffle = (Button) findViewById(R.id.shuffle_btn);
+        funFacts = (TextView) findViewById(R.id.fun_facts);
+        funFacts.setText("\n\nClick on shuffle to see some facts and learn something new!");
+        funFacts.setTextColor(Color.parseColor("#870274"));
+        suffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funFacts.setTextColor(Color.parseColor("#000000"));
+                if (facts.size()>0) funFacts.setText(facts.get(shuffleIndex));
+                shuffleIndex++;
+                if ( shuffleIndex >= facts.size() ) shuffleIndex = 0;
+            }});
+    }
+
 
     class WaitForLesson extends AsyncTask<Void,Void,Void>{
 
@@ -68,10 +75,6 @@ public class StudentNoLesson extends AppCompatActivity {
             String data = "req=active_lesson";
             boolean keepWaiting = true;
             BufferedReader reader = null;
-            getListOfFacts();
-
-
-           //funFacts.setText(facts.get(0).toString());
 
             try{
                 URL url = new URL(Constants.Connections.StudentServlet());
@@ -108,6 +111,16 @@ public class StudentNoLesson extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result){
             startActivity(new Intent(StudentNoLesson.this, StudentLesson.class));
+        }
+    }
+
+    class listOfFacts extends AsyncTask<Void, Void, Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            getListOfFacts();
+            return null;
         }
     }
 
