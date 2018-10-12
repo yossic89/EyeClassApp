@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EyeClass</string>
     <string name="title_activity_student_lesson">StudentLesson</string>
-    <string name="title_activity_student_schedule">StudentSchedule</string>
+    <string name="title_activity_student_schedule">StudentNoLesson</string>
     <string name="password_validation">Your password should contain 5 characters or more</string>
 
     <string-array name="view_students_option_array">
